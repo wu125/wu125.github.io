@@ -160,6 +160,57 @@
 
 				<div class="am-u-lg-6 am-u-md-12 am-u-sm-12 blog-entry-text">
 					<span class="theme-annie-post-date">
+						<a href="/blog/2018/10/04/宽子节注入初始了解/" itemprop="url">
+	<time datetime="2018-10-04T10:45:37.000Z" itemprop="datePublished">
+  		2018-10-04
+  </time>
+</a>    
+
+					</span>
+					<span class="theme-annie-post-title">
+						
+	
+		<a href="/blog/2018/10/04/宽子节注入初始了解/" itemprop="url">		
+			宽子节注入初始了解		
+		</a>
+	
+
+					</span>
+					
+					
+						<p>
+							
+								宽子节注入了解分析本次主要以南邮ctf上的sql injection 3习题为主进行讲解。
+首先我们要了解：一个gbk编码一个汉字占用两个字节，一个utf-8编码一个汉字占用3个字节
+
+宽字节注入原理：
+　　GBK 占用两字节
+　　ASCII占用一字节
+　　PHP中编码为GBK，函数执行添加的是ASCII编码，MYSQL默认字符集是GBK等宽字节字符集。
+　　输入%df和函数执行添加的%5C，被合	
+							  
+						</p> 
+					
+
+					
+						<span class="continue-read">      	
+							<a href="/blog/2018/10/04/宽子节注入初始了解/" class="pull-right">
+								展开全文
+							</a>		
+						</span>
+					         		
+				</div>
+		
+			</article>
+		
+			<article class="am-g blog-entry-article">
+
+				<div class="am-u-lg-6 am-u-md-12 am-u-sm-12 blog-entry-img">
+					<img src="/blog/img/cart_cover.jpg" class="am-u-sm-12">
+				</div>	
+
+				<div class="am-u-lg-6 am-u-md-12 am-u-sm-12 blog-entry-text">
+					<span class="theme-annie-post-date">
 						<a href="/blog/2018/10/04/南邮习题writeup/" itemprop="url">
 	<time datetime="2018-10-04T07:29:40.000Z" itemprop="datePublished">
   		2018-10-04
