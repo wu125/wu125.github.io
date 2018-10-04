@@ -1,0 +1,608 @@
+<!--
+	作者：Sariay
+	时间：2018-09-25
+	描述：There may be a bug, but don't worry, QiLing(器灵) says that it can work normally!
+-->
+
+
+	<!DOCTYPE html>
+	<html>
+		
+
+<head>
+	<title>Hexo</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="apple-mobile-web-app-title" content="Amaze UI" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta name="author" content="John Doe">
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+   	<!-- css -->
+	<link rel="stylesheet" href="/blog/css/style.css">
+
+	<!-- favicon -->
+	<link href="/blog/img/favicon.ico" rel="Shortcut Icon" type="image/ico">
+	
+	<!-- font-awesome -->
+	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+	<body>	
+		<!--Preloader-->
+<div id="preloader">
+	<div id="status">
+		<img alt="PRELOADER" src="/blog/img/logo.png">
+	</div>
+</div>
+<!--Preloader end-->
+
+<!-- header -->
+
+	<header id="header-bg-2">
+
+	
+		<div id="cd-logo"><a href="/blog/"><img src="/blog/img/logo.png" alt="Logo"></a></div>
+	
+	
+	<!-- motto or description -->
+		
+ 		<p class="motto"></p>
+	
+	
+	<!-- current page name or title -->
+	
+		
+		
+			
+			<p class=page-name>当前文章&nbsp;:&nbsp;《》</p>
+			
+		
+	
+	
+	<!-- others: such as change-bg, time... -->
+	<p class="page-name-other">
+		10/4/2018 
+		<style type="text/css">
+	header:after {
+		content: '';
+		position: relative;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		background: #222222;
+		opacity: .5;
+		z-index: -1;
+	}
+	
+	.change-header-bg{
+		font-style: normal;
+	}
+	.change-header-bg i{
+		text-align: center;
+		cursor: pointer;
+		pointer-events: bounding-box;
+	}
+	@media(max-width:512px) {
+		.change-header-bg {
+			display: none;
+			visibility: hidden;
+		}
+	}
+	
+</style>
+
+<script type="text/javascript">
+	function changeHeaderBg(){
+		var random_bg = Math.floor(Math.random() * 109 + 1);
+		var bg = 'url(https://XXX-youname-XXX.github.io/Random-img/' + random_bg + '.jpg)';
+		$("#header-bg-2").css("background-image", bg);
+	}
+</script>
+
+<span class="change-header-bg">
+	——&nbsp;<i  class="fa fa-camera-retro" onclick="changeHeaderBg()"></i>	
+</span>
+	</p>		
+</header>
+
+<!-- nav -->
+<div id="cd-nav">
+	<a href="#0" title="menu" class="cd-nav-trigger"><span></span></a>
+
+	<nav id="cd-main-nav">
+		<ul>
+			
+      		<li class="fa fa-/">
+           		<a href="/blog/blog/" title="主页">主页</a>	
+      		</li>
+    		
+      		<li class="fa fa-/archives">
+           		<a href="/blog/blog/archives" title="归档">归档</a>	
+      		</li>
+    		
+      		<li class="fa fa-/categories">
+           		<a href="/blog/blog/categories" title="分类">分类</a>	
+      		</li>
+    		
+      		<li class="fa fa-/tags">
+           		<a href="/blog/blog/tags" title="标签">标签</a>	
+      		</li>
+    		
+      		<li class="fa fa-/about">
+           		<a href="/blog/blog/about" title="关于">关于</a>	
+      		</li>
+    		
+      		<li class="fa fa-/gallery">
+           		<a href="/blog/blog/gallery" title="相册">相册</a>	
+      		</li>
+    		
+    		
+        	
+		</ul>
+	</nav>
+</div>
+
+		<!--main-->
+		<main> 
+		<div class="page-container">
+		<!-- content srart -->
+<div class="am-g am-g-fixed blog-fixed blog-content">
+	<div class="am-u-md-8 am-u-sm-12">
+
+		<article class="am-article blog-article-p">
+
+			<div class="am-article-hd">
+				
+
+
+				<h1 class="am-article-title blog-text-center">
+					
+					
+				</h1>
+
+				<p class="am-article-meta blog-text-center">
+					<span>
+						<i class="fa fa-clock-o"></i> 
+						<a href="/blog/2018/10/04/南邮ctf习题writeup/" itemprop="url">
+	<time datetime="2018-10-04T07:22:17.947Z" itemprop="datePublished">
+  		2018-10-04
+  </time>
+</a>    
+&nbsp;
+					</span>
+					
+					<span>						
+						
+					</span>
+				</p>
+			</div>
+
+			<div class="am-article-bd">
+				<div class="content" id="post-content">
+					
+						<p>#CTF习题writeup<br> </p><p style="text-indent:2em">注：在CTF平台上做题时，感觉某些题涉及到很好的知识点，有必要写一下对整个题型的writeup，想必对以后的学习应该会有很好的帮助。</p>
+<h2 id=""><a href="#" class="headerlink" title="#"></a>#</h2><p>#md5 collision </p>
+<p>####源码：<br>    $md51 = md5(‘QNKCDZO’);<br>    $a = @$_GET[‘a’];<br>    $md52 = @md5($a);<br>    if(isset($a)){<br>    if ($a != ‘QNKCDZO’ &amp;&amp; $md51 == $md52) {<br>    echo “nctf{<strong><strong><strong><strong>*</strong></strong></strong></strong>}”;<br>    } else {<br>    echo “false!!!”;<br>    }}<br>    else{echo “please input a”;}</p>
+<p>####需要了解的内容<br><strong>isset：</strong>检测变量是否已设置并且非 NULL<br>（isset在php中用来判断变量是否声明，该函数返回布尔类型的值，即true/false。isset只能用于变量，因为传递任何其它参数都将造成解析错误。）</p>
+<p>题目中的主要关键内容是： </p>
+<pre><code>if ($a != &apos;QNKCDZO&apos; &amp;&amp; $md51 == $md52) {
+echo &quot;nctf{*****************}&quot;;
+</code></pre><p>即$a不等于’QNKCDZO’ 但$a的MD5等于’QNKCDZO’的MD5<br>正常情况是想不通的，但此题就利用了一个重要的知识点PHP弱类型<br>（hash比较缺陷）</p>
+<pre><code>== 在进行比较的时候，会先将字符串类型转化成相同，再比较
+</code></pre><p>所以这时候就能满足条件了，因为md51 ‘QNKCDZO’在和 &amp;a比较是会先转换为数值即0e830400451993494058024219903391，而前一个比较就是普通的比较。所以我们只需要将a等于一个md5开头是0e的即可。<br>（0e在比较的时候会将其视作为科学计数法，所以无论0e后面是什么，0的多少次方还是0。）<br>下面是一批md5开头值为0e的字符</p>
+<pre><code>QNKCDZO
+0e830400451993494058024219903391
+
+s878926199a
+0e545993274517709034328855841020
+
+s155964671a
+0e342768416822451524974117254469
+
+s214587387a
+0e848240448830537924465865611904
+
+s214587387a
+0e848240448830537924465865611904
+
+s878926199a
+0e545993274517709034328855841020
+
+s1091221200a
+0e940624217856561557816327384675
+
+s1885207154a
+0e509367213418206700842008763514
+</code></pre><h2 id="-1"><a href="#-1" class="headerlink" title="#"></a>#</h2><p>#php decode</p>
+<p>####源码：</p>
+<pre><code>&lt;?php
+function CLsI($ZzvSWE) {
+
+  $ZzvSWE = gzinflate(base64_decode($ZzvSWE));
+
+for ($i = 0; $i &lt; strlen($ZzvSWE); $i++) {
+
+$ZzvSWE[$i] = chr(ord($ZzvSWE[$i]) - 1);
+
+}
+
+return $ZzvSWE;
+
+}eval(CLsI(&quot;+7DnQGFmYVZ+eoGmlg0fd3puUoZ1fkppek1GdVZhQnJSSZq5aUImGNQBAA==&quot;));?&gt;
+</code></pre><p>####需要了解的内容<br><strong>PHP eval：</strong>eval() 函数把字符串按照 PHP 代码来计算。</p>
+<p></p><p style="text-indent:2em">该字符串必须是合法的 PHP 代码，且必须以分号结尾。</p>
+<p></p><p style="text-indent:2em">如果没有在代码字符串中调用 return 语句，则返回 NULL。如果代码中存在解析错误，则 eval() 函数返回 false。</p>
+<p></p><p style="text-indent:2em">语法eval(phpcode) 参数描述：<br>phpcode必需。规定要计算的 PHP 代码。</p>
+<p></p><p style="text-indent:2em"><br>注释：返回语句会立即终止对字符串的计算。</p>
+<p></p><p style="text-indent:2em"><br>注释：该函数对于在数据库文本字段中供日后计算而进行的代码存储很有用。</p>
+<h2 id="-2"><a href="#-2" class="headerlink" title="#"></a>#</h2><h1 id="MYSQL"><a href="#MYSQL" class="headerlink" title="MYSQL"></a>MYSQL</h1><p><img src="https://i.imgur.com/cgzLUdj.png" alt=""></p>
+<p>开始就让我们了解robots.txt，</p>
+<p>####需要了解的内容<br>robots.txt文件是一个文本文件，robots.txt是一个协议，而不是一个命令。robots.txt是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。</p>
+<p>然后我们进入robots.txt文件中查看到这样的内容：<br><img src="https://i.imgur.com/e26C2NF.png" alt=""><br><strong>PHP intval() 函数</strong>：intval() 函数用于获取变量的整数值。<br>语法–int intval ( mixed $var [, int $base = 10 ] )</p>
+<p><strong>mysql_fetch_array() 函数</strong>：从结果集中取得一行作为关联数组，或数字数组，或二者兼有<br>返回根据从结果集取得的行生成的数组，如果没有更多行则返回 false。</p>
+<p><strong>mysql_query() 函数</strong>：</p>
+<p> 执行一条 MySQL 查询。<br>如果没有打开的连接，本函数会尝试无参数调用 mysql_connect() 函数来建立一个连接并使用之。</p>
+<p>这里从文件中的内容可以看出，当id不等于1024的时候，才输出查询的内容，所以可以判断flag就放在id=1024这个字段里但是直接使id=1024是不能输出的，但intval（）这个点就可以使输入的不是1024的整数值，但返回给查询的语句是1024值。还要注意要在sql.php中传入变量id的值</p>
+<p>#/x00</p>
+<p>####源码<br>view-source:</p>
+<pre><code>if (isset ($_GET[&apos;nctf&apos;])) {
+    if (@ereg (&quot;^[1-9]+$&quot;, $_GET[&apos;nctf&apos;]) === FALSE)
+        echo &apos;必须输入数字才行&apos;;
+    else if (strpos ($_GET[&apos;nctf&apos;], &apos;#biubiubiu&apos;) !== FALSE)   
+        die(&apos;Flag: &apos;.$flag);
+    else
+        echo &apos;骚年，继续努力吧啊~&apos;;
+}
+</code></pre><p>####需要了解的内容<br><strong>ereg</strong>：正则表达式匹配</p>
+<pre><code>语法  int ereg(string pattern, string originalstring, [array regs]);
+</code></pre><p>以区分大小写的方式在 string 中寻找与给定的正则表达式 pattern 所匹配的子串。</p>
+<p>如果找到与 pattern 中圆括号内的子模式相匹配的子串并且函数调用给出了第三个参数 regs，则匹配项将被存入 regs 数组中。$regs[1] 包含第一个左圆括号开始的子串，$regs[2] 包含第二个子串，以此类推。$regs[0] 包含整个匹配的字符串。</p>
+<p>此链接是有关正则表达式各符号的意思<br><a href="https://blog.csdn.net/github_36362235/article/details/53302787" title="正则表达式各符号意义" target="_blank" rel="noopener">https://blog.csdn.net/github_36362235/article/details/53302787</a><br><strong>strpos() 函数</strong>：查找字符串在另一字符串中第一次出现的位置（区分大小写）。</p>
+<pre><code>语法：strpos(string,find,start) 
+string：必需。规定被搜索的字符串。
+find：必需。规定要查找的字符。
+start：可选。规定开始搜索的位置。
+</code></pre><p>返回值：返回字符串在另一字符串中第一次出现的位置，如果没有找到字符串则返回 FALSE。注释： 字符串位置从 0 开始，不是从 1 开始。<br><strong>当然本题主要的内容涉及的是%00截断即0x00截断。</strong></p>
+<blockquote>
+<p>#00截断原理#<br>通过学习了解我们会发现0x00，%00，/00截断，其实都是一样，不过表示方式不同。</p>
+<p>##%00截断<br>%00是URL编码形式的表示，在URL中%00表示的是ASCLL码中的0，作为特殊字符保留，表示字符串的结束，在URL中当出现%00时默认读取结束，后面的内容将不被读取。</p>
+<p>##0x00截断<br>0x表示是16进制，0在16进制中是00，所以0x00就是%00解码成的16进制。</p>
+</blockquote>
+<p>当然此题除了利用0x00截断，还可以利用一个漏洞，就是定义nctf为一个数组，利用数组的返回值不等于false，但是对这个漏洞还不是特别的清楚。</p>
+<p>此外做这道题还要注意，URL中某些特殊符号是无法显示的，需要使用URL编码的形式，编码的格式为：一个百分号，后面跟对应字符的ASCII（16进制）码值。例如，空格的编码值是%20。</p>
+<pre><code>&gt; 特殊含义  十六进制
+
++ 表示空格（在URL中不能使用空格） %2B
+
+/ 分隔目录和子目录  %2F
+
+? 分隔实际的URL和参数   %3F
+
+ # 表示书签 %23
+
+&amp; URL中指定的参数间的分隔符  %26
+
+= URL中指定的参数的值   %3D
+</code></pre><h2 id="-3"><a href="#-3" class="headerlink" title="#"></a>#</h2><p>#bypass again</p>
+<p>####源码：</p>
+<pre><code>if (isset($_GET[&apos;a&apos;]) and isset($_GET[&apos;b&apos;])) {
+if ($_GET[&apos;a&apos;] != $_GET[&apos;b&apos;])
+if (md5($_GET[&apos;a&apos;]) == md5($_GET[&apos;b&apos;]))
+die(&apos;Flag: &apos;.$flag);
+else
+print &apos;Wrong.&apos;;
+}
+</code></pre><p>####需要了解的内容<br><strong>MD5函数漏洞</strong>：在PHP中，MD5是不能处理数组的，md5(数组)会返回null，所以md5(a[])==null,md5(b[])==null，md5(a[])=md5(b[])=null。</p>
+<p>开始我认为使给a，b分别等于两个md5()值相同的就行了。</p>
+<p>但在执行的过程中，忽略了一个问题，就是使ma5(a)=md5(b)满足条件的同时，a和b不能全是开头为字符的字符串，必须有一个开头是不为0的数字字符。这样在进行a!=b的时候才能满足条件，（比如a=s155964671a<br>b=QNKCDZO都是md5值开头为0e的字符串，满足md5(a)=md5(b)，但此时a和b比较时也是相等的，这样就不能使a！=b成立，但’240610708’和其他md5开头是0e的值进行比较时就能满足条件。）<br>当然网上给出的解题思路是利用md5不能处理数组，返回null。</p>
+<h2 id="-4"><a href="#-4" class="headerlink" title="#"></a>#</h2><h1 id="变量覆盖"><a href="#变量覆盖" class="headerlink" title="变量覆盖"></a>变量覆盖</h1><p><img src="https://i.imgur.com/XJKiTOo.png" alt=""><br>查看source.php文件可以看到有关的php代码，</p>
+<pre><code> &lt;?php if ($_SERVER[&quot;REQUEST_METHOD&quot;] == &quot;POST&quot;) { ?&gt;
+&lt;?php
+extract($_POST);
+if ($pass == $thepassword_123) { ?&gt;
+&lt;div class=&quot;alert alert-success&quot;&gt;
+&lt;code&gt;&lt;?php echo $theflag; ?&gt;&lt;/code&gt;
+&lt;/div&gt;
+&lt;?php } ?&gt;
+&lt;?php } ?&gt;
+</code></pre><p>####需要了解的内容<br><strong>extract()</strong>： 函数从数组中将变量导入到当前的符号表。</p>
+<p>extract()函数是用来将数组中的变量导入到当前的符号表，数组键名作为变量名，数组键值作为变量值，函数返回成功设置的变量数目。</p>
+<p>extract()函数有三个参数，第一个参数为数组，就是有操作的数组；第二个参数是关键字，规定不合法和冲突的键名该怎样处理，是可选参数，默认为EXTR_OVERWRITE（覆盖已有的变量），第二个参数可能的值：</p>
+<ul>
+<li><ol>
+<li>EXTR_OVERWRITE：覆盖已有的变量（默认）；</li>
+</ol>
+</li>
+<li><ol>
+<li>EXTR_SKIP：不覆盖已有的变量；</li>
+</ol>
+</li>
+<li><ol>
+<li>EXTR_ PREFIX_SAME：有冲突则在变量名前加上第三个参数规定的前缀；</li>
+</ol>
+</li>
+<li><ol>
+<li>EXTR_ PREFIX_ALL ：给所有变量名加上第三个参数规定的前缀；</li>
+</ol>
+</li>
+<li><ol>
+<li>EXTR_ PREFIX_ INVALID：仅在不合法或数字变量名前加上第三个参数规定的前缀；EXTR_IF_EXISTS ：仅在当前符号表中已有同名变量时，覆盖它们的值。其它的都不处理。</li>
+</ol>
+</li>
+<li><ol>
+<li>EXTR_ PREFIX_ IF_EXISTS：仅在当前符号表中已有同名变量时，建立附加了前缀的变量名，其它的都不处理。</li>
+</ol>
+</li>
+<li><ol>
+<li>EXTR_REFS ：将变量作为引用提取。</li>
+</ol>
+</li>
+</ul>
+<p>第三个参数为字符串，规定变量添加的前缀，可选参数，第二个参数的值为EXTR_ PREFIX_ SAME、EXTR_ PREFIX_ ALL、 EXTR_ PREFIX_ INVALID 或 EXTR_ PREFIX_ IF_EXISTS，该参数必须设置，其它值则不需要设置。</p>
+<pre><code>&lt;?php
+$j = &quot;java&quot;;
+$arr = array(&quot;h&quot; =&gt; &quot;html&quot;,&quot;c&quot; =&gt; &quot;css&quot;, &quot;j&quot; =&gt; &quot;javascript&quot;);
+extract($arr); //默认覆盖已有的变量
+echo &quot;\$h = $h; \$c = $c; \$j = $j&quot;;
+// ‘\’转义字符的用法
+?&gt;
+ 输出结果：$h = html; $c = css; $j = javascript
+</code></pre><p>这里使pass和thepassword_123的变量值相等就能实现变量覆盖了。</p>
+<h2 id="-5"><a href="#-5" class="headerlink" title="#"></a>#</h2><h1 id="上传绕过"><a href="#上传绕过" class="headerlink" title="上传绕过"></a>上传绕过</h1><p><img src="https://i.imgur.com/fmzUmxt.png" alt=""></p>
+<p>通过查看页面源代码中的upload.php，可以知道只能够上后缀为jpg，gif，png的文件。</p>
+<p>于是上传了一个png文件，结果没能成功，返回下面的信息</p>
+<pre><code>Array ( [0] =.png [1] =png ) Upload: K[D4F5S~QJ(~X]AD8_OXALE.png
+Type: image/png
+Size: 9.61328125 Kb
+Stored in: ./uploads/8a9e5f6a7a789acb.phparray(4) { [&quot;dirname&quot;]=string(9) &quot;./uploads&quot; [&quot;basename&quot;]=string(27) &quot;K[D4F5S~QJ(~X]AD8_OXALE.png&quot; [&quot;extension&quot;]=string(3) &quot;png&quot; [&quot;filename&quot;]=string(23) &quot;K[D4F5S~QJ(~X]AD8_OXALE&quot; }
+必须上传成后缀名为php的文件才行啊！
+</code></pre><p>后发现尝试修改文件后缀是不能成功的，这里就又用到了0x00截断，<br>本题利用upload字段，构造upload/1.php ，然后将空格的16进制0x20替换为0x00，这样最后代码检测的是filename的格式，检测最后上传的文件路径成了upload/1.php（0x00）1.png。就完成绕过。</p>
+<p>下面通过一个简单的例子了解文件上传的绕过原理。<br><img src="https://i.imgur.com/8zy2bVf.png" alt=""></p>
+<p>要注意的是读取是文件的16进制内容的00，不是文件名中的00！</p>
+<h2 id="-6"><a href="#-6" class="headerlink" title="#"></a>#</h2><h1 id="pass-check"><a href="#pass-check" class="headerlink" title="pass check"></a>pass check</h1><p>####源码：<br>    &lt;?php<br>    $pass=@$_POST[‘pass’];<br>    $pass1=<strong><strong>***</strong></strong>;//被隐藏起来的密码<br>    if(isset($pass))<br>    {<br>    if(@!strcmp($pass,$pass1)){<br>    echo “flag:nctf{*}”;<br>    }else{<br>    echo “the pass is wrong!”;<br>    }<br>    }else{<br>    echo “please input pass!”;<br>    }<br>    ?&gt;</p>
+<p>####需要了解的内容<br>    strcmp（char<em>a,char</em>b）<br>    若字符串a和字符串b内容相同，则返回0.<br>    ！0就是1<br>    if( !strcmp( a, b ))<br>    {<br>    如果a等于b的时候 会执行这里<br>    }<br> ！是反的意思， 因此 !strcmp 就是 “如果两个字符串相等” 的意思。<br>这样就知道这道题的意思了，只要使pass和pass1返回的值相同就能得到flag了。使用这里又涉及到php弱类型的知识，相关弱类型简单的了解可以去这个地方看一下<br><a href="https://www.cnblogs.com/Mrsm1th/p/6745532.html" title="php弱类型" target="_blank" rel="noopener">https://www.cnblogs.com/Mrsm1th/p/6745532.html</a></p>
+<p>比较数组的时候会返回null，null和0在判断中是相等的，<br>strcmp(array,string)=null=0</p>
+<p>pass1是string，使pass为数组就行了</p>
+
+					
+				</div>
+			</div>
+		</article>
+
+		<ul class="am-pagination">
+    
+	
+		<li class="am-pagination-next">
+		<a class="pull-right" href="/blog/2018/10/01/hello-world/" title="Hello World">
+			下一篇 &raquo;
+		</a>
+		</li>
+	 
+ </ul>
+        
+
+		<div class="theme-annie-comment-button-container">
+	<button id="annie-comment-button" class="theme-annie-comment-button" onclick="Annie_Comment()">
+		加载评论
+		<!--加载评论-->
+	</button>
+</div>
+
+<div id="annie-comment-container" class="theme-annie-comment-main-container">
+
+	
+		
+			<!-- comment valine -->
+			<!-- show valine comment -->
+<div id="valineComment" class="comment"></div>
+
+<!-- valine`s js & css -->
+<script>
+	window.jQuery || document.write('<script src="/blog/js/jquery-2.1.1.min.js"><\/script>')
+</script>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/blog/js/valine.min.js"></script>
+<link rel="stylesheet" href="/blog/css/comment.css">
+
+<script>
+	var checkExistComment = setInterval(function() {
+		if( $('#valineComment').length ) {
+			new Valine({
+				// AV 对象来自上面引入av-min.js(老司机们不要开车➳♡゛扎心了老铁)
+				av: AV,
+				//使用id寻找div元素（使用class可能找不到）
+				el: '#valineComment',
+				emoticon_url: 'https://cloud.panjunwen.com/alu',
+				emoticon_list: ["吐.png", "期待.png", "高兴.png", "吐血倒地.png", "哭泣.png", "欢呼.png"],
+				app_id: "3333....", //获取APP ID
+				app_key: "3333......", //获取APP KEY
+				placeholder: "no any!", //评论框占位提示文字        			
+			});
+			clearInterval(checkExistComment);
+		}
+	}, 100);
+</script>
+		
+	
+
+</div>
+
+<script type="text/javascript">
+	/* Show Comment */
+	var Annie_Comment = function() {
+		function Show_Hidden(obj) {
+			obj.style.display = 'block';
+		}
+		
+		//var obutton = $('#annie-comment-button');
+		//var obutton = $('#annie-comment-container');
+		var obutton = document.getElementById("annie-comment-button" || "0");
+		var odiv = document.getElementById("annie-comment-container");
+		if( 'obutton' ) {
+			obutton.onclick = function() {
+				Show_Hidden(odiv);
+				$("#annie-comment-button").css("display", 'none');
+				return false;
+			}
+		}
+	};
+
+	(function Annie_Init() {
+		Annie_Comment();
+	})();
+</script>
+		
+		<!--
+	时间：2018-09-24
+	描述：The TOC module refers to 'https://github.com/codefine/hexo-theme-mellow', include toc.ejs、toc.js、toc.css. All rights reserved by codefine. 
+-->
+
+	
+		<aside class="post-widget">
+			<nav class="post-toc-wrap" id="post-toc">
+				
+					<strong>文章目录</strong>
+				
+				
+				<!--toc(post.content)-->
+				<ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#"><span class="post-toc-text">#</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#-1"><span class="post-toc-text">#</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#-2"><span class="post-toc-text">#</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#MYSQL"><span class="post-toc-text">MYSQL</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#-3"><span class="post-toc-text">#</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#-4"><span class="post-toc-text">#</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#变量覆盖"><span class="post-toc-text">变量覆盖</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#-5"><span class="post-toc-text">#</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#上传绕过"><span class="post-toc-text">上传绕过</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#-6"><span class="post-toc-text">#</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#pass-check"><span class="post-toc-text">pass check</span></a>
+			</nav>
+			<div class="post-toc-bar"><div>
+		</aside>
+	
+
+	</div>
+</div>
+		</div>
+		</main>
+		
+		<!--footer-->
+		<footer>
+	<div class="blog-text-center">
+		<div class="theme-annie-social">
+				
+				
+					<a href="http://github.com/" title="Github" target="_blank"><i class="fa fa-github"></i>&nbsp;</a>
+					
+				
+					<a href="http://github.com/" title="Weibo" target="_blank"><i class="fa fa-weibo"></i>&nbsp;</a>
+				
+				
+					<a href="http://github.com/" title="Email" target="_blank"><i class="fa fa-envelope-o"></i>&nbsp;</a>
+					
+				
+					<a href="http://github.com/" title="QQ" target="_blank"><i class="fa fa-qq"></i>&nbsp;</a>
+					
+				
+					<a href="http://github.com/" title="Twitter" target="_blank"><i class="fa fa-twitter"></i>&nbsp;</a>
+						
+				
+		</div>
+	</div>
+
+	<div  class="blog-text-center">
+		<div class="theme-annie-copyright">
+			
+				&copy; 2017 - 2018, content by John Doe. All Rights Reserved.			       	
+			
+		</div>
+	</div>
+
+	<div class="blog-text-center">
+		<div class="theme-annie-copyright">
+			<a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> Theme <a href="https://github.com/Sariay/hexo-theme-Annie" title="Annie" target="_blank" rel="noopener">Annie</a> by Sariay.		
+		</div>
+	</div>
+</footer>
+		<!-- <script src="http://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script> -->
+
+<script>
+	window.jQuery || document.write('<script src="/blog/js/jquery-2.1.1.min.js"><\/script>')
+</script>
+
+<style>
+	.motto {
+		color: #000000;
+		font-size: 20px;
+		margin: 100px 25% 0;
+		width: 50%;
+		line-height: 1.4;
+		font-family:"KaiTi", "STXingkai", "Source Sans Pro", "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", FontAwesome, sans-serif;
+		text-align: center;
+	}
+	@media(max-width: 890px) {
+		.motto {	
+			margin: 100px 10% 0;
+			width: 80%;
+		}
+	}
+	@media(max-width: 890px) {
+		.motto {
+			margin: 100px 5% 0;
+			width: 90%;
+		}
+	}
+</style>
+
+
+	<script src="/blog/js/motto.js"></script>
+	<script type="text/javascript">
+		$(".motto").html(getMingYanContent());
+	</script>	
+
+
+
+
+
+
+
+	<script type="text/javascript" src="/blog/js/toc.js"></script>
+
+
+<script type="text/javascript" src="/blog/js/main.js"></script>
+
+<script type="text/javascript">
+	//generate a random img that pre_name 'from 0 to 110'
+	var random_bg = Math.floor(Math.random() * 109 + 1);
+
+	//var bg = 'url(/img/random/' + random_bg + '.jpg)';		
+	var bg = 'url(https://XXX-youname-XXX.github.io/Random-img/' + random_bg + '.jpg)';
+
+	$("#header-bg-2").css("background-image", bg);
+</script>
+		
+		<!--back to top-->
+        <style type="text/css">
+	#totop {
+		background: white;
+		border-radius: 50%;
+		position: fixed;
+		right: 5.4%;
+		bottom: 80px;
+		cursor: pointer;
+	}
+	
+	#totop a {
+		color: #474747;
+		background-color: transparent;
+		padding: 10px;
+		text-decoration: none;
+	}
+	
+	@media(max-width:512px) {
+		#totop {
+			display: none;
+			visibility: hidden;
+		}
+	}
+</style>
+
+
+	<div id="totop">
+  		<a href="javascript:;" class="fa fa-arrow-up"></a>
+	</div>
+
+	</body>
+	</html>
+
