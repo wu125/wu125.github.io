@@ -187,8 +187,8 @@
 			<div class="am-article-bd">
 				<div class="content" id="post-content">
 					
-						<p>#CTF习题writeup<br> </p><p style="text-indent:2em">注：在CTF平台上做题时，感觉某些题涉及到很好的知识点，有必要写一下对整个题型的writeup，想必对以后的学习应该会有很好的帮助。</p>
-<h2 id=""><a href="#" class="headerlink" title="#"></a>#</h2><h1 id="md5-collision"><a href="#md5-collision" class="headerlink" title="md5 collision"></a>md5 collision</h1><p>####源码：<br>    $md51 = md5(‘QNKCDZO’);<br>    $a = @$_GET[‘a’];<br>    $md52 = @md5($a);<br>    if(isset($a)){<br>    if ($a != ‘QNKCDZO’ &amp;&amp; $md51 == $md52) {<br>    echo “nctf{<strong><strong><strong><strong>*</strong></strong></strong></strong>}”;<br>    } else {<br>    echo “false!!!”;<br>    }}<br>    else{echo “please input a”;}</p>
+						<h1 id="CTF习题writeup"><a href="#CTF习题writeup" class="headerlink" title="CTF习题writeup"></a>CTF习题writeup</h1><p> </p><p style="text-indent:2em">注：在CTF平台上做题时，感觉某些题涉及到很好的知识点，有必要写一下对整个题型的writeup，想必对以后的学习应该会有很好的帮助。</p>
+<h1 id="md5-collision"><a href="#md5-collision" class="headerlink" title="md5 collision"></a>md5 collision</h1><p>####源码：<br>    $md51 = md5(‘QNKCDZO’);<br>    $a = @$_GET[‘a’];<br>    $md52 = @md5($a);<br>    if(isset($a)){<br>    if ($a != ‘QNKCDZO’ &amp;&amp; $md51 == $md52) {<br>    echo “nctf{<strong><strong><strong><strong>*</strong></strong></strong></strong>}”;<br>    } else {<br>    echo “false!!!”;<br>    }}<br>    else{echo “please input a”;}</p>
 <p>####需要了解的内容<br><strong>isset：</strong>检测变量是否已设置并且非 NULL<br>（isset在php中用来判断变量是否声明，该函数返回布尔类型的值，即true/false。isset只能用于变量，因为传递任何其它参数都将造成解析错误。）</p>
 <p>题目中的主要关键内容是： </p>
 <pre><code>if ($a != &apos;QNKCDZO&apos; &amp;&amp; $md51 == $md52) {
@@ -219,7 +219,7 @@ s1091221200a
 
 s1885207154a
 0e509367213418206700842008763514
-</code></pre><h2 id="-1"><a href="#-1" class="headerlink" title="#"></a>#</h2><h1 id="php-decode"><a href="#php-decode" class="headerlink" title="php decode"></a>php decode</h1><p>####源码：</p>
+</code></pre><h1 id="php-decode"><a href="#php-decode" class="headerlink" title="php decode"></a>php decode</h1><p>####源码：</p>
 <pre><code>&lt;?php
 function CLsI($ZzvSWE) {
 
@@ -240,7 +240,7 @@ return $ZzvSWE;
 <p></p><p style="text-indent:2em">语法eval(phpcode) 参数描述：<br>phpcode必需。规定要计算的 PHP 代码。</p>
 <p></p><p style="text-indent:2em"><br>注释：返回语句会立即终止对字符串的计算。</p>
 <p></p><p style="text-indent:2em"><br>注释：该函数对于在数据库文本字段中供日后计算而进行的代码存储很有用。</p>
-<h2 id="-2"><a href="#-2" class="headerlink" title="#"></a>#</h2><h1 id="MYSQL"><a href="#MYSQL" class="headerlink" title="MYSQL"></a>MYSQL</h1><p><img src="https://i.imgur.com/cgzLUdj.png" alt=""></p>
+<h1 id="MYSQL"><a href="#MYSQL" class="headerlink" title="MYSQL"></a>MYSQL</h1><p><img src="https://i.imgur.com/cgzLUdj.png" alt=""></p>
 <p>开始就让我们了解robots.txt，</p>
 <p>####需要了解的内容<br>robots.txt文件是一个文本文件，robots.txt是一个协议，而不是一个命令。robots.txt是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。</p>
 <p>然后我们进入robots.txt文件中查看到这样的内容：<br><img src="https://i.imgur.com/e26C2NF.png" alt=""><br><strong>PHP intval() 函数</strong>：intval() 函数用于获取变量的整数值。<br>语法–int intval ( mixed $var [, int $base = 10 ] )</p>
@@ -287,7 +287,7 @@ start：可选。规定开始搜索的位置。
 &amp; URL中指定的参数间的分隔符  %26
 
 = URL中指定的参数的值   %3D
-</code></pre><h2 id="-3"><a href="#-3" class="headerlink" title="#"></a>#</h2><h1 id="bypass-again"><a href="#bypass-again" class="headerlink" title="bypass again"></a>bypass again</h1><p>####源码：</p>
+</code></pre><h1 id="bypass-again"><a href="#bypass-again" class="headerlink" title="bypass again"></a>bypass again</h1><p>####源码：</p>
 <pre><code>if (isset($_GET[&apos;a&apos;]) and isset($_GET[&apos;b&apos;])) {
 if ($_GET[&apos;a&apos;] != $_GET[&apos;b&apos;])
 if (md5($_GET[&apos;a&apos;]) == md5($_GET[&apos;b&apos;]))
@@ -298,7 +298,7 @@ print &apos;Wrong.&apos;;
 </code></pre><p>####需要了解的内容<br><strong>MD5函数漏洞</strong>：在PHP中，MD5是不能处理数组的，md5(数组)会返回null，所以md5(a[])==null,md5(b[])==null，md5(a[])=md5(b[])=null。</p>
 <p>开始我认为使给a，b分别等于两个md5()值相同的就行了。</p>
 <p>但在执行的过程中，忽略了一个问题，就是使ma5(a)=md5(b)满足条件的同时，a和b不能全是开头为字符的字符串，必须有一个开头是不为0的数字字符。这样在进行a!=b的时候才能满足条件，（比如a=s155964671a<br>b=QNKCDZO都是md5值开头为0e的字符串，满足md5(a)=md5(b)，但此时a和b比较时也是相等的，这样就不能使a！=b成立，但’240610708’和其他md5开头是0e的值进行比较时就能满足条件。）<br>当然网上给出的解题思路是利用md5不能处理数组，返回null。</p>
-<h2 id="-4"><a href="#-4" class="headerlink" title="#"></a>#</h2><h1 id="变量覆盖"><a href="#变量覆盖" class="headerlink" title="变量覆盖"></a>变量覆盖</h1><p><img src="https://i.imgur.com/XJKiTOo.png" alt=""><br>查看source.php文件可以看到有关的php代码，</p>
+<h1 id="变量覆盖"><a href="#变量覆盖" class="headerlink" title="变量覆盖"></a>变量覆盖</h1><p><img src="https://i.imgur.com/XJKiTOo.png" alt=""><br>查看source.php文件可以看到有关的php代码，</p>
 <pre><code> &lt;?php if ($_SERVER[&quot;REQUEST_METHOD&quot;] == &quot;POST&quot;) { ?&gt;
 &lt;?php
 extract($_POST);
@@ -351,7 +351,7 @@ echo &quot;\$h = $h; \$c = $c; \$j = $j&quot;;
 ?&gt;
  输出结果：$h = html; $c = css; $j = javascript
 </code></pre><p>这里使pass和thepassword_123的变量值相等就能实现变量覆盖了。</p>
-<h2 id="-5"><a href="#-5" class="headerlink" title="#"></a>#</h2><h1 id="上传绕过"><a href="#上传绕过" class="headerlink" title="上传绕过"></a>上传绕过</h1><p><img src="https://i.imgur.com/fmzUmxt.png" alt=""></p>
+<h1 id="上传绕过"><a href="#上传绕过" class="headerlink" title="上传绕过"></a>上传绕过</h1><p><img src="https://i.imgur.com/fmzUmxt.png" alt=""></p>
 <p>通过查看页面源代码中的upload.php，可以知道只能够上后缀为jpg，gif，png的文件。</p>
 <p>于是上传了一个png文件，结果没能成功，返回下面的信息</p>
 <pre><code>Array ( [0] =.png [1] =png ) Upload: K[D4F5S~QJ(~X]AD8_OXALE.png
@@ -362,7 +362,7 @@ Stored in: ./uploads/8a9e5f6a7a789acb.phparray(4) { [&quot;dirname&quot;]=string
 </code></pre><p>后发现尝试修改文件后缀是不能成功的，这里就又用到了0x00截断，<br>本题利用upload字段，构造upload/1.php ，然后将空格的16进制0x20替换为0x00，这样最后代码检测的是filename的格式，检测最后上传的文件路径成了upload/1.php（0x00）1.png。就完成绕过。</p>
 <p>下面通过一个简单的例子了解文件上传的绕过原理。<br><img src="https://i.imgur.com/8zy2bVf.png" alt=""></p>
 <p>要注意的是读取是文件的16进制内容的00，不是文件名中的00！</p>
-<h2 id="-6"><a href="#-6" class="headerlink" title="#"></a>#</h2><h1 id="pass-check"><a href="#pass-check" class="headerlink" title="pass check"></a>pass check</h1><p>####源码：<br>    &lt;?php<br>    $pass=@$_POST[‘pass’];<br>    $pass1=<strong><strong>***</strong></strong>;//被隐藏起来的密码<br>    if(isset($pass))<br>    {<br>    if(@!strcmp($pass,$pass1)){<br>    echo “flag:nctf{*}”;<br>    }else{<br>    echo “the pass is wrong!”;<br>    }<br>    }else{<br>    echo “please input pass!”;<br>    }<br>    ?&gt;</p>
+<h1 id="pass-check"><a href="#pass-check" class="headerlink" title="pass check"></a>pass check</h1><p>####源码：<br>    &lt;?php<br>    $pass=@$_POST[‘pass’];<br>    $pass1=<strong><strong>***</strong></strong>;//被隐藏起来的密码<br>    if(isset($pass))<br>    {<br>    if(@!strcmp($pass,$pass1)){<br>    echo “flag:nctf{*}”;<br>    }else{<br>    echo “the pass is wrong!”;<br>    }<br>    }else{<br>    echo “please input pass!”;<br>    }<br>    ?&gt;</p>
 <p>####需要了解的内容<br>    strcmp（char<em>a,char</em>b）<br>    若字符串a和字符串b内容相同，则返回0.<br>    ！0就是1<br>    if( !strcmp( a, b ))<br>    {<br>    如果a等于b的时候 会执行这里<br>    }<br> ！是反的意思， 因此 !strcmp 就是 “如果两个字符串相等” 的意思。<br>这样就知道这道题的意思了，只要使pass和pass1返回的值相同就能得到flag了。使用这里又涉及到php弱类型的知识，相关弱类型简单的了解可以去这个地方看一下<br><a href="https://www.cnblogs.com/Mrsm1th/p/6745532.html" title="php弱类型" target="_blank" rel="noopener">https://www.cnblogs.com/Mrsm1th/p/6745532.html</a></p>
 <p>比较数组的时候会返回null，null和0在判断中是相等的，<br>strcmp(array,string)=null=0</p>
 <p>pass1是string，使pass为数组就行了</p>
@@ -468,7 +468,7 @@ Stored in: ./uploads/8a9e5f6a7a789acb.phparray(4) { [&quot;dirname&quot;]=string
 				
 				
 				<!--toc(post.content)-->
-				<ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#"><span class="post-toc-text">#</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#md5-collision"><span class="post-toc-text">md5 collision</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#-1"><span class="post-toc-text">#</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#php-decode"><span class="post-toc-text">php decode</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#-2"><span class="post-toc-text">#</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#MYSQL"><span class="post-toc-text">MYSQL</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#x00"><span class="post-toc-text">/x00</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#-3"><span class="post-toc-text">#</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#bypass-again"><span class="post-toc-text">bypass again</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#-4"><span class="post-toc-text">#</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#变量覆盖"><span class="post-toc-text">变量覆盖</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#-5"><span class="post-toc-text">#</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#上传绕过"><span class="post-toc-text">上传绕过</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#-6"><span class="post-toc-text">#</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#pass-check"><span class="post-toc-text">pass check</span></a>
+				<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#CTF习题writeup"><span class="post-toc-text">CTF习题writeup</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#md5-collision"><span class="post-toc-text">md5 collision</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#php-decode"><span class="post-toc-text">php decode</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#MYSQL"><span class="post-toc-text">MYSQL</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#x00"><span class="post-toc-text">/x00</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#bypass-again"><span class="post-toc-text">bypass again</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#变量覆盖"><span class="post-toc-text">变量覆盖</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#上传绕过"><span class="post-toc-text">上传绕过</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#pass-check"><span class="post-toc-text">pass check</span></a></li></ol>
 			</nav>
 			<div class="post-toc-bar"><div>
 		</aside>
