@@ -10,7 +10,7 @@
 		
 
 <head>
-	<title>Hello World</title>
+	<title>宽子节注入初始了解</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="apple-mobile-web-app-title" content="Amaze UI" />
@@ -54,7 +54,7 @@
 		
 		
 			
-			<p class=page-name>当前文章&nbsp;:&nbsp;《Hello World》</p>
+			<p class=page-name>当前文章&nbsp;:&nbsp;《宽子节注入初始了解》</p>
 			
 		
 	
@@ -160,8 +160,8 @@
 					
 					
 	
-		<a href="/2018/10/05/hello-world/" itemprop="url">		
-			Hello World		
+		<a href="/2018/10/05/宽子节注入初始了解/" itemprop="url">		
+			宽子节注入初始了解		
 		</a>
 	
 
@@ -170,8 +170,8 @@
 				<p class="am-article-meta blog-text-center">
 					<span>
 						<i class="fa fa-clock-o"></i> 
-						<a href="/2018/10/05/hello-world/" itemprop="url">
-	<time datetime="2018-10-05T08:11:27.829Z" itemprop="datePublished">
+						<a href="/2018/10/05/宽子节注入初始了解/" itemprop="url">
+	<time datetime="2018-10-05T09:20:51.000Z" itemprop="datePublished">
   		2018-10-05
   </time>
 </a>    
@@ -187,15 +187,28 @@
 			<div class="am-article-bd">
 				<div class="content" id="post-content">
 					
-						<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+						<h1 id="宽子节注入了解分析"><a href="#宽子节注入了解分析" class="headerlink" title="宽子节注入了解分析"></a>宽子节注入了解分析</h1><p>本次主要以南邮ctf上的sql injection 3习题为主进行讲解。<br><img src="https://i.imgur.com/oAyHbKa.png" alt=""></p>
+<p><strong>首先我们要了解</strong>：一个gbk编码一个汉字占用两个字节，一个utf-8编码一个汉字占用3个字节</p>
+<blockquote>
+<p>宽字节注入原理：</p>
+<p>　　GBK 占用两字节</p>
+<p>　　ASCII占用一字节</p>
+<p>　　PHP中编码为GBK，函数执行添加的是ASCII编码，MYSQL默认字符集是GBK等宽字节字符集。</p>
+<p>　　输入%df和函数执行添加的%5C，被合并成%df%5C。由于GBK是两字节，这个%df%5C被MYSQL识别为GBK。导致本应的%df\变成%df%5C。%df%5C在GBK编码中没有对应，所以被当成无效字符。</p>
+</blockquote>
+<h2 id="PHP-addslashes-函数"><a href="#PHP-addslashes-函数" class="headerlink" title="PHP addslashes() 函数"></a>PHP addslashes() 函数</h2><p>addslashes() 函数返回在预定义字符之前添加反斜杠的字符串。</p>
+<p>预定义字符是：</p>
+<pre><code>单引号（&apos;）
+双引号（&quot;）
+反斜杠（\）
+NULL
+</code></pre><p>提示：该函数可用于为存储在数据库中的字符串以及数据库查询语句准备字符串。</p>
+<p>注释：默认地，PHP 对所有的 GET、POST 和 COOKIE 数据自动运行 addslashes()。所以您不应对已转义过的字符串使用 addslashes()，因为这样会导致双层转义。<br>遇到这种情况时可以使用函数 get _ magic _ quotes _ gpc() 进行检测。</p>
+<p>通过测试sql注入我们发现怎么也不报错，这是因为在这个sql语句前面，使用了一个addslashes（）函数，将id的值转义，只要我们的输入的参数在单引号中，就无法逃逸出单引号的限制，无法注入。<br><img src="https://i.imgur.com/mVBx3L0.png" alt=""></p>
+<p>addslashes函数使’变成\’，使引号变得不再是单引号<br>所以要想注入就得逃出addslashes的限制，就得使\无效。</p>
+<p>这里就利用mysql本身的特性，mysql在使用GBK编码时，会认为两个字符是一个汉字（前一个ascii码要大于128，才到汉字范围）。</p>
+<p>所以在后面加上%df’或%a1’就会报错，因为%df和后面\的变成一个汉字“運”，从而使\无效。使’逃逸了出来。就能实现sql注入了。</p>
+<p>根据gbk编码，第一个字节大于128就会被mysql认为是一个汉字，或者是被认为是一个宽字符，就能够使后面的’即%27逃逸出。<br><img src="https://i.imgur.com/WUSJg2W.png" alt=""></p>
 
 					
 				</div>
@@ -204,13 +217,13 @@
 
 		<ul class="am-pagination">
     
-    	<li class="am-pagination-prev">
-   		<a class="pull-left" href="/2018/10/05/南邮习题writeup/" title="南邮习题writeup">
-      		&laquo; 上一篇
+	
+		<li class="am-pagination-next">
+		<a class="pull-right" href="/2018/10/05/南邮习题writeup/" title="南邮习题writeup">
+			下一篇 &raquo;
 		</a>
 		</li>
-	
-	
+	 
  </ul>
         
 
@@ -298,7 +311,7 @@
 				
 				
 				<!--toc(post.content)-->
-				<ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Quick-Start"><span class="post-toc-text">Quick Start</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Create-a-new-post"><span class="post-toc-text">Create a new post</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Run-server"><span class="post-toc-text">Run server</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Generate-static-files"><span class="post-toc-text">Generate static files</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Deploy-to-remote-sites"><span class="post-toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+				<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#宽子节注入了解分析"><span class="post-toc-text">宽子节注入了解分析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#PHP-addslashes-函数"><span class="post-toc-text">PHP addslashes() 函数</span></a></li></ol></li></ol>
 			</nav>
 			<div class="post-toc-bar"><div>
 		</aside>
