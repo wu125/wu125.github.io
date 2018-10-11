@@ -10,7 +10,7 @@
 		
 
 <head>
-	<title>宽子节注入初始了解</title>
+	<title>报错型注入学习</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="apple-mobile-web-app-title" content="Amaze UI" />
@@ -54,7 +54,7 @@
 		
 		
 			
-			<p class=page-name>当前文章&nbsp;:&nbsp;《宽子节注入初始了解》</p>
+			<p class=page-name>当前文章&nbsp;:&nbsp;《报错型注入学习》</p>
 			
 		
 	
@@ -160,8 +160,8 @@
 					
 					
 	
-		<a href="/2018/10/05/宽子节注入初始了解/" itemprop="url">		
-			宽子节注入初始了解		
+		<a href="/2018/10/11/报错型注入学习/" itemprop="url">		
+			报错型注入学习		
 		</a>
 	
 
@@ -170,9 +170,9 @@
 				<p class="am-article-meta blog-text-center">
 					<span>
 						<i class="fa fa-clock-o"></i> 
-						<a href="/2018/10/05/宽子节注入初始了解/" itemprop="url">
-	<time datetime="2018-10-05T09:20:51.000Z" itemprop="datePublished">
-  		2018-10-05
+						<a href="/2018/10/11/报错型注入学习/" itemprop="url">
+	<time datetime="2018-10-11T13:28:42.000Z" itemprop="datePublished">
+  		2018-10-11
   </time>
 </a>    
 &nbsp;
@@ -187,28 +187,31 @@
 			<div class="am-article-bd">
 				<div class="content" id="post-content">
 					
-						<h1 id="宽子节注入了解分析"><a href="#宽子节注入了解分析" class="headerlink" title="宽子节注入了解分析"></a>宽子节注入了解分析</h1><p>本次主要以南邮ctf上的sql injection 3习题为主进行讲解。<br><img src="https://i.imgur.com/oAyHbKa.png" alt=""></p>
-<p><strong>首先我们要了解</strong>：一个gbk编码一个汉字占用两个字节，一个utf-8编码一个汉字占用3个字节</p>
-<blockquote>
-<p>宽字节注入原理：</p>
-<p>　　GBK 占用两字节</p>
-<p>　　ASCII占用一字节</p>
-<p>　　PHP中编码为GBK，函数执行添加的是ASCII编码，MYSQL默认字符集是GBK等宽字节字符集。</p>
-<p>　　输入%df和函数执行添加的%5C，被合并成%df%5C。由于GBK是两字节，这个%df%5C被MYSQL识别为GBK。导致本应的%df\变成%df%5C。%df%5C在GBK编码中没有对应，所以被当成无效字符。</p>
-</blockquote>
-<h2 id="PHP-addslashes-函数"><a href="#PHP-addslashes-函数" class="headerlink" title="PHP addslashes() 函数"></a>PHP addslashes() 函数</h2><p>addslashes() 函数返回在预定义字符之前添加反斜杠的字符串。</p>
-<p>预定义字符是：</p>
-<pre><code>单引号（&apos;）
-双引号（&quot;）
-反斜杠（\）
-NULL
-</code></pre><p>提示：该函数可用于为存储在数据库中的字符串以及数据库查询语句准备字符串。</p>
-<p>注释：默认地，PHP 对所有的 GET、POST 和 COOKIE 数据自动运行 addslashes()。所以您不应对已转义过的字符串使用 addslashes()，因为这样会导致双层转义。<br>遇到这种情况时可以使用函数 get _ magic _ quotes _ gpc() 进行检测。</p>
-<p>通过测试sql注入我们发现怎么也不报错，这是因为在这个sql语句前面，使用了一个addslashes（）函数，将id的值转义，只要我们的输入的参数在单引号中，就无法逃逸出单引号的限制，无法注入。<br><img src="https://i.imgur.com/mVBx3L0.png" alt=""></p>
-<p>addslashes函数使’变成\’，使引号变得不再是单引号<br>所以要想注入就得逃出addslashes的限制，就得使\无效。</p>
-<p>这里就利用mysql本身的特性，mysql在使用GBK编码时，会认为两个字符是一个汉字（前一个ascii码要大于128，才到汉字范围）。</p>
-<p>所以在后面加上%df’或%a1’就会报错，因为%df和后面\的变成一个汉字“運”，从而使\无效。使’逃逸了出来。就能实现sql注入了。</p>
-<p>根据gbk编码，第一个字节大于128就会被mysql认为是一个汉字，或者是被认为是一个宽字符，就能够使后面的’即%27逃逸出。<br><img src="https://i.imgur.com/WUSJg2W.png" alt=""></p>
+						<h1 id="双查询注入"><a href="#双查询注入" class="headerlink" title="双查询注入"></a>双查询注入</h1><p><strong>声明：本次内容是针对sqli-labs的第五题的，对此题报错注入所涉及的知识进行的简单整理和总结。</strong></p>
+<p>当然首先我们需要了解此题注入中的一些函数，count（）、rand（）、floor（）;</p>
+<p><strong>count()</strong>：加入参数*返回表中的记录数</p>
+<p><strong>rand()</strong>：产生一个0或1的随机数，如何加入整数参数，会产生一个固定的伪随机数列。</p>
+<p><strong>floor()</strong>:向下取整，或者是向下舍入，如floor(x)就是取不大于x的最大整数</p>
+<p><strong>concat（）</strong>：将多个字符串连接成一个字符串<br>报错查询语句：</p>
+<pre><code>?id=1&apos; union select 1,count(*),concat(你希望的查询语句,floor(rand(0)*2))a from information_schema.columns group by a
+</code></pre><p>对于为什么会产生报错，网上的讲解已经很详细了，这里就不将太多的细节了，直接进入关键的点。</p>
+<h2 id="floor-rand-2-报错"><a href="#floor-rand-2-报错" class="headerlink" title="floor(rand()*2)报错"></a>floor(rand()*2)报错</h2><p>原理就是在查询时使用rand()，该值将被计算多次，<br>在查询时首先会建立一个虚拟表，当查询到新的键不在虚拟表中，数据库就会将其插入表中，如果数据库中已存在该键，则找到该键对应的计数字段并加1。新建虚拟表如下</p>
+<p><img src="https://i.imgur.com/nhAxkgn.png" alt=""></p>
+<p>我们使用了rand(0)，在查询虚拟表之前会先执行一下rand(0)，第一次的到结果为0，发现虚拟表中没有，所以此时要插入键0，在插入时，rand(0)函数又需要执行一遍，此时的查询结果为1(根据上一张图片查询结果01101可知，第二次查询结果为1)，所以此时要插入键1，取第一条记录查询，虚拟表如下</p>
+<p><img src="https://i.imgur.com/oY4SM9l.png" alt=""></p>
+<p>我们看到执行rand(0)函数时，返回的结果是有规律的，但是，对于数据库而言，rand(0)就是一个未知的变量，它必须确定具体值才能写入虚拟表。<br>取第二条记录查询，此时执行rand(0)返回的结果为1(此时对应上面01101的第三次查询结果1)，查找虚拟表发现键1已经存在，所以直接加1，虚拟表变化如下</p>
+<p><img src="https://i.imgur.com/Vg11eOC.png" alt=""></p>
+<p>取第三条记录查询，此时执行rand(0)返回的结果为0(此时对应上面01101的第四次查询结果0)，发现虚拟表中没有键0，所以要将其写入虚拟表。同样在写入虚拟表的时候，rand(0)又执行了一遍，此时查询结果为上面01101的第五次结果1，但是键1已经存在虚拟表中，由于键只能唯一，所以此时就会报错。所以在使用floor()、rand(0)、count()、group by时，数据表中至少要有3条记录才会报错.</p>
+<p><strong>实战测试：</strong><br>通过测试，知道是字符型的单引号注入。</p>
+<p><img src="https://i.imgur.com/og91wtF.png" alt=""></p>
+<p>通过order by 4%23可知字段数是三，接下来用报错注入公式进行数据爆破，<br>爆数据库名：</p>
+<p><img src="https://i.imgur.com/vqMNztl.png" alt=""></p>
+<p>爆表名：<br>这里提示输出信息超过一行，说明数据表名组成的字符长度超过64位，需要使用limit 0，1进行一个个输出。<br><img src="https://i.imgur.com/qqCT6mo.png" alt=""></p>
+<p><img src="https://i.imgur.com/197arPi.png" alt=""></p>
+<p>爆列名：</p>
+<p><img src="https://i.imgur.com/6bTl87M.png" alt=""></p>
+<p>爆数据：<br><img src="https://i.imgur.com/kO1I4PR.png" alt=""></p>
+<p>相关报错型注入blog链接：<br><a href="https://blog.csdn.net/qq_35544379/article/details/77453019" target="_blank" rel="noopener">https://blog.csdn.net/qq_35544379/article/details/77453019</a><br><a href="http://www.freebuf.com/column/147903.html" target="_blank" rel="noopener">http://www.freebuf.com/column/147903.html</a><br><a href="http://wooyun.jozxing.cc/static/drops/tips-14312.html" target="_blank" rel="noopener">http://wooyun.jozxing.cc/static/drops/tips-14312.html</a></p>
 
 					
 				</div>
@@ -217,15 +220,9 @@ NULL
 
 		<ul class="am-pagination">
     
-    	<li class="am-pagination-prev">
-   		<a class="pull-left" href="/2018/10/11/报错型注入学习/" title="报错型注入学习">
-      		&laquo; 上一篇
-		</a>
-		</li>
-	
 	
 		<li class="am-pagination-next">
-		<a class="pull-right" href="/2018/10/05/南邮习题writeup/" title="南邮习题writeup">
+		<a class="pull-right" href="/2018/10/05/宽子节注入初始了解/" title="宽子节注入初始了解">
 			下一篇 &raquo;
 		</a>
 		</li>
@@ -317,7 +314,7 @@ NULL
 				
 				
 				<!--toc(post.content)-->
-				<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#宽子节注入了解分析"><span class="post-toc-text">宽子节注入了解分析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#PHP-addslashes-函数"><span class="post-toc-text">PHP addslashes() 函数</span></a></li></ol></li></ol>
+				<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#双查询注入"><span class="post-toc-text">双查询注入</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#floor-rand-2-报错"><span class="post-toc-text">floor(rand()*2)报错</span></a></li></ol></li></ol>
 			</nav>
 			<div class="post-toc-bar"><div>
 		</aside>
