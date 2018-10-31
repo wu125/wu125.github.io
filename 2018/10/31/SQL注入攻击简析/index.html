@@ -1,0 +1,563 @@
+<!--
+	作者：Sariay
+	时间：2018-09-25
+	描述：There may be a bug, but don't worry, QiLing(器灵) says that it can work normally!
+-->
+
+
+	<!DOCTYPE html>
+	<html>
+		
+
+<head>
+	<title>SQL注入攻击简析</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="apple-mobile-web-app-title" content="Amaze UI" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta name="author" content="MR.TER">
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+   	<!-- css -->
+	<link rel="stylesheet" href="/css/style.css">
+
+	<!-- favicon -->
+	<link href="/img/favicon.ico" rel="Shortcut Icon" type="image/ico">
+	
+	<!-- font-awesome -->
+	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+	<body>	
+		<!--Preloader-->
+<div id="preloader">
+	<div id="status">
+		<img alt="PRELOADER" src="/img/logo.png">
+	</div>
+</div>
+<!--Preloader end-->
+
+<!-- header -->
+
+	<header id="header-bg-2">
+
+	
+		<div id="cd-logo"><a href="/"><img src="/img/logo.png" alt="Logo"></a></div>
+	
+	
+	<!-- motto or description -->
+		
+ 		<p class="motto"></p>
+	
+	
+	<!-- current page name or title -->
+	
+		
+		
+			
+			<p class=page-name>当前文章&nbsp;:&nbsp;《SQL注入攻击简析》</p>
+			
+		
+	
+	
+	<!-- others: such as change-bg, time... -->
+	<p class="page-name-other">
+		10/31/2018 
+		<style type="text/css">
+	header:after {
+		content: '';
+		position: relative;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		background: #222222;
+		opacity: .5;
+		z-index: -1;
+	}
+	
+	.change-header-bg{
+		font-style: normal;
+	}
+	.change-header-bg i{
+		text-align: center;
+		cursor: pointer;
+		pointer-events: bounding-box;
+	}
+	@media(max-width:512px) {
+		.change-header-bg {
+			display: none;
+			visibility: hidden;
+		}
+	}
+	
+</style>
+
+<script type="text/javascript">
+	function changeHeaderBg(){
+		var random_bg = Math.floor(Math.random() * 109 + 1);
+		var bg = 'url(https://wu125.github.io/groundback/' + random_bg + '.jpg)';
+		$("#header-bg-2").css("background-image", bg);
+	}
+</script>
+
+<span class="change-header-bg">
+	——&nbsp;<i  class="fa fa-camera-retro" onclick="changeHeaderBg()"></i>	
+</span>
+	</p>		
+</header>
+
+<!-- nav -->
+<div id="cd-nav">
+	<a href="#0" title="menu" class="cd-nav-trigger"><span></span></a>
+
+	<nav id="cd-main-nav">
+		<ul>
+			
+      		<li class="fa fa-/">
+           		<a href="/" title="主页">主页</a>	
+      		</li>
+    		
+      		<li class="fa fa-/archives">
+           		<a href="/archives" title="归档">归档</a>	
+      		</li>
+    		
+      		<li class="fa fa-/categories">
+           		<a href="/categories" title="分类">分类</a>	
+      		</li>
+    		
+      		<li class="fa fa-/tags">
+           		<a href="/tags" title="标签">标签</a>	
+      		</li>
+    		
+      		<li class="fa fa-/about">
+           		<a href="/about" title="关于">关于</a>	
+      		</li>
+    		
+      		<li class="fa fa-/gallery">
+           		<a href="/gallery" title="相册">相册</a>	
+      		</li>
+    		
+    		
+        	
+		</ul>
+	</nav>
+</div>
+
+		<!--main-->
+		<main> 
+		<div class="page-container">
+		<!-- content srart -->
+<div class="am-g am-g-fixed blog-fixed blog-content">
+	<div class="am-u-md-8 am-u-sm-12">
+
+		<article class="am-article blog-article-p">
+
+			<div class="am-article-hd">
+				
+
+
+				<h1 class="am-article-title blog-text-center">
+					
+					
+	
+		<a href="/2018/10/31/SQL注入攻击简析/" itemprop="url">		
+			SQL注入攻击简析		
+		</a>
+	
+
+				</h1>
+
+				<p class="am-article-meta blog-text-center">
+					<span>
+						<i class="fa fa-clock-o"></i> 
+						<a href="/2018/10/31/SQL注入攻击简析/" itemprop="url">
+	<time datetime="2018-10-31T12:49:42.000Z" itemprop="datePublished">
+  		2018-10-31
+  </time>
+</a>    
+&nbsp;
+					</span>
+					
+					<span>						
+						
+					</span>
+				</p>
+			</div>
+
+			<div class="am-article-bd">
+				<div class="content" id="post-content">
+					
+						<h1 id="SQL注入攻击"><a href="#SQL注入攻击" class="headerlink" title="SQL注入攻击"></a>SQL注入攻击</h1><p> SQL Injection：就是通过把SQL命令插入到Web表单递交或输入域名或页面请求的查询字符串，最终达到欺骗服务器执行恶意的SQL命令。</p>
+<p>SQL注入是怎样产生的呢？实际上就是利用构造动态SQL语句提交到服务器后台进行，使后台服务器能够识别并返回出我们想要的信息。<br>构造动态字符串是一种编程技术，它允许开发人员在运行过程中动态构造SQL语句。开发人员可以使用动态SQL来创建通用、灵活的应用。动态SQL语句是在执行过程中构造的，它根据不同的条件产生不同的SQL语句。当开发人员在运行过程中需要根据不同的查询标准来决定提取什么字段(如SELECT语句)，或者根据不同的条件来选择不同的查询表时，动态构造SQL语句会非常有用。</p>
+<p>具体来说，它是利用现有应用程序，将（恶意）的SQL命令注入到后台数据库引擎执行的能力，它可以通过在Web表单中输入（恶意）SQL语句得到一个存在安全漏洞的网站上的数据库，而不是按照设计者意图去执行SQL语句。</p>
+<p>本次我们就简单讲述一下寻找确认SQL注入的理论部分，及利用注入攻击获取信息的简单方法。</p>
+<h3 id="sql注入攻击流程"><a href="#sql注入攻击流程" class="headerlink" title="sql注入攻击流程"></a>sql注入攻击流程</h3><ol>
+<li>判断注入点</li>
+<li>判断注入点类型</li>
+<li>判断数据库类型</li>
+<li>获取数据库数据，提权</li>
+</ol>
+<p>所以我们首先要说的问题就是如何判断sql注入点?</p>
+<h3 id="判断注入点"><a href="#判断注入点" class="headerlink" title="判断注入点"></a>判断注入点</h3><p>最简单的方法，引入单引号</p>
+<hr>
+<p><a href="http://host/test.php?id=100&#39;" target="_blank" rel="noopener">http://host/test.php?id=100&#39;</a> 返回错误说明有可能注入</p>
+<p><a href="http://host/test.php?id=100" target="_blank" rel="noopener">http://host/test.php?id=100</a> and 1=1 返回正常</p>
+<p><a href="http://host/test.php?id=100" target="_blank" rel="noopener">http://host/test.php?id=100</a> and 1=2 返回错误</p>
+<hr>
+<p>如果满足上面三点，说明是注入点的可能性就很高了<br>然后就是判断注入类型了。</p>
+<h3 id="数字型注入点"><a href="#数字型注入点" class="headerlink" title="数字型注入点"></a>数字型注入点</h3><p>测试方法：</p>
+<hr>
+<p>http：//host/test.php?id=100 and 1=1 返回成功</p>
+<p>http：//host/test.php?id=100 and 1=2 返回失败</p>
+<hr>
+<p>可能很多同学刚开始接触的时候不清楚为什么会第一个会返回成功，第二个返回失败</p>
+<p>原因是这样的：</p>
+<p>假设一个网站的SQL查询语句是</p>
+<p>SELECT * FROM new WHERE id=$id</p>
+<p>当我们输入 100 and 1=1 的时候，语句就变成了 SELECT * FROM new WHERE id=100 and 1=1</p>
+<p>对于这个查询语句，首先要保证and的左边id返回的值是存在的，如果这个值不存在，那就没法测试了，而and右边的 1=1 是恒成立的，所以整个语句返回的成功的，如果and后面是1=2，因为1=2是不成立的，对于and语句判断的逻辑，有一个不成立，整个就返回失败。</p>
+<h3 id="字符型注入点"><a href="#字符型注入点" class="headerlink" title="字符型注入点"></a>字符型注入点</h3><p>测试方法：</p>
+<hr>
+<p><a href="http://host/test.php?name=man&#39;and" target="_blank" rel="noopener">http://host/test.php?name=man&#39;and</a> ‘a’=’a 返回成功</p>
+<p><a href="http://host/test.php?name=man&#39;and" target="_blank" rel="noopener">http://host/test.php?name=man&#39;and</a> ‘a’=’b 返回失败</p>
+<hr>
+<p>这里看上去和前面的数字型多了个单引号，事实的情况是</p>
+<p>假设我们网站的SQL语句是</p>
+<p>SELECT * FROM news WHERE name=’$name’</p>
+<p>当我们输入构造的语句时就变成了</p>
+<p>SELECT * FROM news WHERE name=’man’ and ‘a’=’a’ 这里可以看出这个sql已经闭合了，同理返回的情况根据and的逻辑判断。</p>
+<h3 id="搜索型注入点"><a href="#搜索型注入点" class="headerlink" title="搜索型注入点"></a>搜索型注入点</h3><p>测试方法：</p>
+<hr>
+<p><a href="http://host//test.php?keyword=python%&#39;" target="_blank" rel="noopener">http://host//test.php?keyword=python%&#39;</a> and 1=1 and ‘%’=’ </p>
+<p><a href="http://host//test.php?keyword=python%&#39;" target="_blank" rel="noopener">http://host//test.php?keyword=python%&#39;</a> and 1=2 and ‘%’=’</p>
+<hr>
+<p>假设SQL查询语句是</p>
+<p>SELECT * FROM news WHERE keyword like ‘%$keyword%’</p>
+<p>当我们输入构造的语句时就变成</p>
+<p>SELECT * FROM news WHERE keyword like ‘%python%’ and 1=1 and ‘%’=’%’</p>
+<p>这里可以把这个查询语句看成三段</p>
+<ul>
+<li>SELECT * FROM news WHERE keyword like ‘%python%’</li>
+<li>and 1=1</li>
+<li>and ‘%’=’%’</li>
+</ul>
+<p>第一句的内容首先需要是成功的，返回的情况也是and的逻辑判断，有一个错误就失败，全部正确就成功</p>
+<h3 id="内联式SQL注入"><a href="#内联式SQL注入" class="headerlink" title="内联式SQL注入"></a>内联式SQL注入</h3><p>内联注入是指查询注入SQL代码后，原来的查询仍然全部执行</p>
+<p>假设一个这样的SQL查询语句</p>
+<p>SELECT * FROM admin WHERE username=’$name’ AND password =’$passwd’</p>
+<p>我们构造语句  ‘ or ‘’=’  提交到登录框中的username，或者提交到password框里面，这两种提交方法是不一样的，我们下面就来分析一下这两个提交方法</p>
+<p>提交到username我们的语句就会成为这样</p>
+<p>SELECT * FROM admin WHERE username=’’ or ‘’=’’ AND password =’随便输入’</p>
+<p>提交到password则会是这样</p>
+<p>SELECT * FROM admin WHERE username=’随便输入’ AND password =’’ or ‘’=’’</p>
+<p>这里我们要知道一点，就是在SQL语句中，AND的优先级是大于OR的，于是会先计算AND，然后之后才会计算OR，所以这里我们的语句会被OR分为两段SQL语句</p>
+<p>下面我们来分析一下提交到username的情况</p>
+<ul>
+<li>SELECT * FROM admin WHERE username=’’  返回失败</li>
+<li>or</li>
+<li>‘’=’’ AND password =’随便输入’ 返回失败</li>
+</ul>
+<p>数据库是不会存在username为NULL的字段的，所以第一句返回的是失败，第三句中，因为password是我们随便输入的，99.99%是不会存在这个密码的，于是AND之后，我们的第三句也是失败的，所以整个语句返回失败的</p>
+<p>如果是password情况就不一样了</p>
+<ul>
+<li>SELECT * FROM admin WHERE username=’随便输入’ AND password =’’</li>
+<li>or</li>
+<li>‘’=’’</li>
+</ul>
+<p>这里我们第一句是返回失败的，但是我们的第二句’’=’’是返回成功的，OR逻辑是有一个是成功就返回成功，于是我们的整个语句就会返回成功</p>
+<h3 id="终止式SQL注入"><a href="#终止式SQL注入" class="headerlink" title="终止式SQL注入"></a>终止式SQL注入</h3><p>终止式SQL语句注入是指攻击者在注入SQL代码时，通过注释剩下的查询来成功结束该语句</p>
+<p>于是被注释的查询不会被执行，我们还是拿上面那个例子举例</p>
+<p>SELECT * FROM admin WHER username=’$name’ AND password =’$passwd’</p>
+<p>我们上面已经知道，在username框内填入 </p>
+<p>‘ or ‘’=’  </p>
+<p>程序是不会返回成功的，事实上我们可以构造username输入</p>
+<p>‘ or ‘’=’’ – </p>
+<p>之后我们就可以得到如下的查询语句</p>
+<p>SELECT * FROM admin WHER username=’’ or ‘’=’’ –’ AND password =’随便输入’</p>
+<p>这里语句被分成三个部分</p>
+<ul>
+<li>SELECT * FROM admin WHER username=’’</li>
+<li>or ‘’=’’ 返回成功</li>
+<li>–’ AND password =’随便输入’</li>
+</ul>
+<p>第一句肯定是返回失败的，但是我们第二句会返回成功，那你可能会问，那后面的语句了？</p>
+<p>已经被我们注释掉了，是不会执行的，所以我们还是可以通过在username做这个手脚来绕过登录</p>
+<p>一些常见的终止方式有</p>
+<p>终止字符串： – ， #， %23， %00， /* </p>
+<p>终止方法： – , ‘– , ‘)– , ) – , ‘)) –, ))–</p>
+<h3 id="UNION注入"><a href="#UNION注入" class="headerlink" title="UNION注入"></a>UNION注入</h3><p>UNION是数据库管理员经常使用且可以掌控的运算符之一</p>
+<p>可以使用它连接两条或多条SELECT语句的查询结果</p>
+<p>其基本语法如下：</p>
+<hr>
+<p>SELECT colum1,colum2,colum3,…,columN FROM table1</p>
+<p>UNION</p>
+<p>SELECT colum1,colum2,colum3,…,columN FROM table2</p>
+<hr>
+<p>如果应用返回第一个（原始）查询得到的数据，那么通过在第一个查询后注入一个UNION运算符，并添加另一个任意查询，便可读取到数据库用户有权限访问的任何一张表</p>
+<p>当然这么好用的语句是有限制的 </p>
+<ol>
+<li>两个查询返回的列数必须相同</li>
+<li>两个SELECT语句返回的数据库对应的列必须类型相同或兼容</li>
+<li>通常只有终止式注入时，可较快猜解并利用，否则要知道原始的SQL语句才能比较方便的利用</li>
+</ol>
+<p>UNION语句的构建<br>确定列数量：<br>UNION SELECT null,null,null,…,null FROM dual</p>
+<p>使用逐步增加null数量，直到匹配原语句的列数量，成功匹配后返回正常页面</p>
+<p>这是利用了&lt;两个查询返回的列数必须相同&gt;这个原理</p>
+<p>还可以使用ORDER BY确定原语句列数量，并用折半查找法提高猜测效率</p>
+<h3 id="枚举数据库"><a href="#枚举数据库" class="headerlink" title="枚举数据库"></a>枚举数据库</h3><h4 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h4><p>这里我们只说明Mysql数据库的一般常用查询语句</p>
+<p>获取当前用户</p>
+<p>select user()</p>
+<p>获取当前数据库</p>
+<p>select database()</p>
+<p>查询数据库名：</p>
+<p>select group_ concat(schema_ name) from information_schema.schemata</p>
+<p>查询数据表名：</p>
+<p>select group_ concat(table_ name) from information_ schema.tables where table_schema=database </p>
+<p>查询列名：</p>
+<p>select group_ concat(column_ name) from information_ schema.columns where table_name=表名</p>
+<p>查询数据：</p>
+<p>select group_concat(数据名) from 数控库.数据表</p>
+<p>例如：select group_concat(password) from security.users</p>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>本次内容就这么点，其实还有很多的内容需要去继续了解，比如SQL盲注利用的攻击，基于错误回显的SQL注入,基于user-agent、cookie、referer，SQL注入中如何避开各种过滤方法（大小写变种、SQL注释、空字节等）以及SQL注入的二阶SQL注入内容都需要在以后的学习中不断了解深入。</p>
+
+					
+				</div>
+			</div>
+		</article>
+
+		<ul class="am-pagination">
+    
+	
+		<li class="am-pagination-next">
+		<a class="pull-right" href="/2018/10/11/报错型注入学习/" title="报错型注入学习">
+			下一篇 &raquo;
+		</a>
+		</li>
+	 
+ </ul>
+        
+
+		<div class="theme-annie-comment-button-container">
+	<button id="annie-comment-button" class="theme-annie-comment-button" onclick="Annie_Comment()">
+		加载评论
+		<!--加载评论-->
+	</button>
+</div>
+
+<div id="annie-comment-container" class="theme-annie-comment-main-container">
+
+	
+		
+			<!-- comment valine -->
+			<!-- show valine comment -->
+<div id="valineComment" class="comment"></div>
+
+<!-- valine`s js & css -->
+<script>
+	window.jQuery || document.write('<script src="/js/jquery-2.1.1.min.js"><\/script>')
+</script>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/js/valine.min.js"></script>
+<link rel="stylesheet" href="/css/comment.css">
+
+<script>
+	var checkExistComment = setInterval(function() {
+		if( $('#valineComment').length ) {
+			new Valine({
+				// AV 对象来自上面引入av-min.js(老司机们不要开车➳♡゛扎心了老铁)
+				av: AV,
+				//使用id寻找div元素（使用class可能找不到）
+				el: '#valineComment',
+				emoticon_url: 'https://cloud.panjunwen.com/alu',
+				emoticon_list: ["吐.png", "期待.png", "高兴.png", "吐血倒地.png", "哭泣.png", "欢呼.png"],
+				app_id: "3333....", //获取APP ID
+				app_key: "3333......", //获取APP KEY
+				placeholder: "no any!", //评论框占位提示文字        			
+			});
+			clearInterval(checkExistComment);
+		}
+	}, 100);
+</script>
+		
+	
+
+</div>
+
+<script type="text/javascript">
+	/* Show Comment */
+	var Annie_Comment = function() {
+		function Show_Hidden(obj) {
+			obj.style.display = 'block';
+		}
+		
+		//var obutton = $('#annie-comment-button');
+		//var obutton = $('#annie-comment-container');
+		var obutton = document.getElementById("annie-comment-button" || "0");
+		var odiv = document.getElementById("annie-comment-container");
+		if( 'obutton' ) {
+			obutton.onclick = function() {
+				Show_Hidden(odiv);
+				$("#annie-comment-button").css("display", 'none');
+				return false;
+			}
+		}
+	};
+
+	(function Annie_Init() {
+		Annie_Comment();
+	})();
+</script>
+		
+		<!--
+	时间：2018-09-24
+	描述：The TOC module refers to 'https://github.com/codefine/hexo-theme-mellow', include toc.ejs、toc.js、toc.css. All rights reserved by codefine. 
+-->
+
+	
+		<aside class="post-widget">
+			<nav class="post-toc-wrap" id="post-toc">
+				
+					<strong>文章目录</strong>
+				
+				
+				<!--toc(post.content)-->
+				<ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#SQL注入攻击"><span class="post-toc-text">SQL注入攻击</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#sql注入攻击流程"><span class="post-toc-text">sql注入攻击流程</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#判断注入点"><span class="post-toc-text">判断注入点</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#数字型注入点"><span class="post-toc-text">数字型注入点</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#字符型注入点"><span class="post-toc-text">字符型注入点</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#搜索型注入点"><span class="post-toc-text">搜索型注入点</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#内联式SQL注入"><span class="post-toc-text">内联式SQL注入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#终止式SQL注入"><span class="post-toc-text">终止式SQL注入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#UNION注入"><span class="post-toc-text">UNION注入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#枚举数据库"><span class="post-toc-text">枚举数据库</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#MySQL"><span class="post-toc-text">MySQL</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#结语"><span class="post-toc-text">结语</span></a></li></ol></li></ol></li></ol>
+			</nav>
+			<div class="post-toc-bar"><div>
+		</aside>
+	
+
+	</div>
+</div>
+		</div>
+		</main>
+		
+		<!--footer-->
+		<footer>
+	<div class="blog-text-center">
+		<div class="theme-annie-social">
+				
+				
+					<a href="http://github.com/" title="Github" target="_blank"><i class="fa fa-github"></i>&nbsp;</a>
+					
+				
+					<a href="http://github.com/" title="Weibo" target="_blank"><i class="fa fa-weibo"></i>&nbsp;</a>
+				
+				
+					<a href="http://github.com/" title="Email" target="_blank"><i class="fa fa-envelope-o"></i>&nbsp;</a>
+					
+				
+					<a href="http://github.com/" title="QQ" target="_blank"><i class="fa fa-qq"></i>&nbsp;</a>
+					
+				
+					<a href="http://github.com/" title="Twitter" target="_blank"><i class="fa fa-twitter"></i>&nbsp;</a>
+						
+				
+		</div>
+	</div>
+
+	<div  class="blog-text-center">
+		<div class="theme-annie-copyright">
+			
+				&copy; 2017 - 2018, content by MR.TER. All Rights Reserved.			       	
+			
+		</div>
+	</div>
+
+	<div class="blog-text-center">
+		<div class="theme-annie-copyright">
+			<a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> Theme <a href="https://github.com/Sariay/hexo-theme-Annie" title="Annie" target="_blank" rel="noopener">Annie</a> by Sariay.		
+		</div>
+	</div>
+</footer>
+		<!-- <script src="http://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script> -->
+
+<script>
+	window.jQuery || document.write('<script src="/js/jquery-2.1.1.min.js"><\/script>')
+</script>
+
+<style>
+	.motto {
+		color: #000000;
+		font-size: 20px;
+		margin: 100px 25% 0;
+		width: 50%;
+		line-height: 1.4;
+		font-family:"KaiTi", "STXingkai", "Source Sans Pro", "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", FontAwesome, sans-serif;
+		text-align: center;
+	}
+	@media(max-width: 890px) {
+		.motto {	
+			margin: 100px 10% 0;
+			width: 80%;
+		}
+	}
+	@media(max-width: 890px) {
+		.motto {
+			margin: 100px 5% 0;
+			width: 90%;
+		}
+	}
+</style>
+
+
+	<script src="/js/motto.js"></script>
+	<script type="text/javascript">
+		$(".motto").html(getMingYanContent());
+	</script>	
+
+
+
+
+
+
+
+	<script type="text/javascript" src="/js/toc.js"></script>
+
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript">
+	//generate a random img that pre_name 'from 0 to 110'
+	var random_bg = Math.floor(Math.random() * 109 + 1);
+
+	//var bg = 'url(/img/random/' + random_bg + '.jpg)';		
+	var bg = 'url(https://wu125.github.io/groundback/' + random_bg + '.jpg)';
+
+	$("#header-bg-2").css("background-image", bg);
+</script>
+		
+		<!--back to top-->
+        <style type="text/css">
+	#totop {
+		background: white;
+		border-radius: 50%;
+		position: fixed;
+		right: 5.4%;
+		bottom: 80px;
+		cursor: pointer;
+	}
+	
+	#totop a {
+		color: #474747;
+		background-color: transparent;
+		padding: 10px;
+		text-decoration: none;
+	}
+	
+	@media(max-width:512px) {
+		#totop {
+			display: none;
+			visibility: hidden;
+		}
+	}
+</style>
+
+
+	<div id="totop">
+  		<a href="javascript:;" class="fa fa-arrow-up"></a>
+	</div>
+
+	</body>
+	</html>
+
