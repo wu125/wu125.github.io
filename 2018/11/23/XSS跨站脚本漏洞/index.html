@@ -1,0 +1,500 @@
+<!--
+	作者：Sariay
+	时间：2018-09-25
+	描述：There may be a bug, but don't worry, QiLing(器灵) says that it can work normally!
+-->
+
+
+	<!DOCTYPE html>
+	<html>
+		
+
+<head>
+	<title>XSS跨站脚本漏洞</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="apple-mobile-web-app-title" content="Amaze UI" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta name="author" content="MR.TER">
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+   	<!-- css -->
+	<link rel="stylesheet" href="/css/style.css">
+
+	<!-- favicon -->
+	<link href="/img/favicon.ico" rel="Shortcut Icon" type="image/ico">
+	
+	<!-- font-awesome -->
+	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+	<body>	
+		<!--Preloader-->
+<div id="preloader">
+	<div id="status">
+		<img alt="PRELOADER" src="/img/logo.png">
+	</div>
+</div>
+<!--Preloader end-->
+
+<!-- header -->
+
+	<header id="header-bg-2">
+
+	
+		<div id="cd-logo"><a href="/"><img src="/img/logo.png" alt="Logo"></a></div>
+	
+	
+	<!-- motto or description -->
+		
+ 		<p class="motto"></p>
+	
+	
+	<!-- current page name or title -->
+	
+		
+		
+			
+			<p class=page-name>当前文章&nbsp;:&nbsp;《XSS跨站脚本漏洞》</p>
+			
+		
+	
+	
+	<!-- others: such as change-bg, time... -->
+	<p class="page-name-other">
+		11/23/2018 
+		<style type="text/css">
+	header:after {
+		content: '';
+		position: relative;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		background: #222222;
+		opacity: .5;
+		z-index: -1;
+	}
+	
+	.change-header-bg{
+		font-style: normal;
+	}
+	.change-header-bg i{
+		text-align: center;
+		cursor: pointer;
+		pointer-events: bounding-box;
+	}
+	@media(max-width:512px) {
+		.change-header-bg {
+			display: none;
+			visibility: hidden;
+		}
+	}
+	
+</style>
+
+<script type="text/javascript">
+	function changeHeaderBg(){
+		var random_bg = Math.floor(Math.random() * 109 + 1);
+		var bg = 'url(https://wu125.github.io/groundback/' + random_bg + '.jpg)';
+		$("#header-bg-2").css("background-image", bg);
+	}
+</script>
+
+<span class="change-header-bg">
+	——&nbsp;<i  class="fa fa-camera-retro" onclick="changeHeaderBg()"></i>	
+</span>
+	</p>		
+</header>
+
+<!-- nav -->
+<div id="cd-nav">
+	<a href="#0" title="menu" class="cd-nav-trigger"><span></span></a>
+
+	<nav id="cd-main-nav">
+		<ul>
+			
+      		<li class="fa fa-/">
+           		<a href="/" title="主页">主页</a>	
+      		</li>
+    		
+      		<li class="fa fa-/archives">
+           		<a href="/archives" title="归档">归档</a>	
+      		</li>
+    		
+      		<li class="fa fa-/categories">
+           		<a href="/categories" title="分类">分类</a>	
+      		</li>
+    		
+      		<li class="fa fa-/tags">
+           		<a href="/tags" title="标签">标签</a>	
+      		</li>
+    		
+      		<li class="fa fa-/about">
+           		<a href="/about" title="关于">关于</a>	
+      		</li>
+    		
+      		<li class="fa fa-/gallery">
+           		<a href="/gallery" title="相册">相册</a>	
+      		</li>
+    		
+    		
+        	
+		</ul>
+	</nav>
+</div>
+
+		<!--main-->
+		<main> 
+		<div class="page-container">
+		<!-- content srart -->
+<div class="am-g am-g-fixed blog-fixed blog-content">
+	<div class="am-u-md-8 am-u-sm-12">
+
+		<article class="am-article blog-article-p">
+
+			<div class="am-article-hd">
+				
+
+
+				<h1 class="am-article-title blog-text-center">
+					
+					
+	
+		<a href="/2018/11/23/XSS跨站脚本漏洞/" itemprop="url">		
+			XSS跨站脚本漏洞		
+		</a>
+	
+
+				</h1>
+
+				<p class="am-article-meta blog-text-center">
+					<span>
+						<i class="fa fa-clock-o"></i> 
+						<a href="/2018/11/23/XSS跨站脚本漏洞/" itemprop="url">
+	<time datetime="2018-11-23T06:56:09.000Z" itemprop="datePublished">
+  		2018-11-23
+  </time>
+</a>    
+&nbsp;
+					</span>
+					
+					<span>						
+						
+					</span>
+				</p>
+			</div>
+
+			<div class="am-article-bd">
+				<div class="content" id="post-content">
+					
+						<h3 id="XSS产生的背景"><a href="#XSS产生的背景" class="headerlink" title="XSS产生的背景"></a>XSS产生的背景</h3><p>在Web 2.0出现以前，XSS跨站脚本攻击不是那么引人注目</p>
+<p>但是在随着Web 2.0出现以后，配合流行的AJAX技术，XSS跨站脚本攻击的危害性达到了十分严重的地步</p>
+<p>世界上第一个XSS跨站脚本蠕虫发生在MySpace网站，20小时内就传染了一百万个用户，最后导致该网站瘫痪</p>
+<p>随着SNS社交网站、微博系统的出现，Web应用安全重心转移到用户账号安全上，XSS攻击成为当今最流行的一种攻击方式，同时也是Web应用面临的主要威胁</p>
+<h3 id="XSS概述"><a href="#XSS概述" class="headerlink" title="XSS概述"></a>XSS概述</h3><p>XSS, 即为（Cross Site Scripting），中文名为跨站脚本，为避免与样式CSS混淆，简称XSS。指恶意攻击者利用网站没有对用户提交数据进行转义处理或者过滤不足的缺点，进而添加一些代码，嵌入到web页面中去。使别的用户访问都会执行相应的嵌入代码。</p>
+<p>是发生在目标用户的浏览器层面上的，当渲染DOM树的过程成发生了不在预期内执行的JS代码时，就发生了XSS攻击。</p>
+<p>跨站脚本的重点不在‘跨站’上，而在于‘脚本’上。大多数XSS攻击的主要方式是嵌入一段远程或者第三方域上的JS代码。实际上是在目标网站的作用域下执行了这段js代码。</p>
+<p>XSS属于被动式的攻击，因为其被动且不好利用，所以许多人常忽略其危害性</p>
+<p>在XSS攻击中，一般有三个角色参与</p>
+<ul>
+<li>攻击者</li>
+<li>目标服务器</li>
+<li>受害者的浏览器</li>
+</ul>
+<h3 id="XSS攻击的危害"><a href="#XSS攻击的危害" class="headerlink" title="XSS攻击的危害"></a>XSS攻击的危害</h3><ul>
+<li>突破域限制</li>
+<li>修改HTML代码</li>
+<li>XSS蠕虫攻击</li>
+<li>命令执行</li>
+<li>获取客户端信息</li>
+<li>结合CSRF攻击</li>
+<li>获取系统管理后台权限</li>
+<li>盗取账号</li>
+<li>DDOS攻击</li>
+</ul>
+<h3 id="XSS攻击的分类"><a href="#XSS攻击的分类" class="headerlink" title="XSS攻击的分类"></a>XSS攻击的分类</h3><h4 id="反射型XSS"><a href="#反射型XSS" class="headerlink" title="反射型XSS"></a>反射型XSS</h4><p>反射型XSS，也叫非持久型XSS，其特征是指发生请求时，XSS代码出现在请求URL中，作为参数提交到服务器，服务器解析并响应。响应结果中包含XSS代码，最后浏览器解析并执行。它也是XSS攻击最常见的类型，这种XSS攻击的隐蔽性较差，一般的浏览器都可以识别并拦截</p>
+<h4 id="存储型XSS"><a href="#存储型XSS" class="headerlink" title="存储型XSS"></a>存储型XSS</h4><p>存储型XSS，也叫持久型XSS，这种攻击的特征主要是将XSS代码发送到服务器（不管是数据库、内存还是文件系统等。），然后在下次请求页面的时候就不用带上XSS代码了，当一个页面被用户打开的时候就执行脚本。一般存储型XSS隐蔽性比较高，浏览器一般不会察觉和拦截，所以其危害也是最大的</p>
+<h4 id="DOM型XSS"><a href="#DOM型XSS" class="headerlink" title="DOM型XSS"></a>DOM型XSS</h4><p>DOM型XSS，这是一种基于DOM树的XSS，其特征是XSS代码不需要服务器端的解析响应，而是通过浏览器端的DOM树解析。</p>
+<h3 id="XSS可能出现的地方"><a href="#XSS可能出现的地方" class="headerlink" title="XSS可能出现的地方"></a>XSS可能出现的地方</h3><h4 id="HTML文档"><a href="#HTML文档" class="headerlink" title="HTML文档"></a>HTML文档</h4><p>包括：</p>
+<ul>
+<li>标签</li>
+<li>属性</li>
+<li>Javascript</li>
+<li>css</li>
+</ul>
+<h4 id="多媒体、网页插件"><a href="#多媒体、网页插件" class="headerlink" title="多媒体、网页插件"></a>多媒体、网页插件</h4><ul>
+<li>Flash</li>
+<li>Word</li>
+<li>PDF</li>
+<li>Siverlight</li>
+<li>Applet</li>
+</ul>
+<h4 id="CS客户端软件"><a href="#CS客户端软件" class="headerlink" title="CS客户端软件"></a>CS客户端软件</h4><p>这里就没有分类了，比如大家熟悉的Steam这种类型的客户端软件</p>
+<h3 id="XSS漏洞实例"><a href="#XSS漏洞实例" class="headerlink" title="XSS漏洞实例"></a>XSS漏洞实例</h3><p>下面就通过DVWA平台演示下3种类型XSS的攻击例子。</p>
+<h4 id="XSS-Reflected"><a href="#XSS-Reflected" class="headerlink" title="XSS(Reflected)"></a>XSS(Reflected)</h4><p>假如有这么一个网站，它会将我们的搜索内容都原封不动的返回显示在网页里面，我们就可以使用反射型XSS来攻击了</p>
+<p><img src="https://i.imgur.com/diihmuU.png" alt=""></p>
+<p>在上图可以看出有个输入框，我们输入什么就会返回什么，<br>那这样就满足了反射型XSS的特征，我们可以这样进行攻击</p>
+<p>输入一句恶意代码：<code>&lt;script&gt;alert(&quot;XSS&quot;);&lt;/script&gt;</code></p>
+<p><img src="https://i.imgur.com/Vt273Fo.png" alt=""></p>
+<p>接收者接收消息显示的时候将会弹出窗口</p>
+<h4 id="XSS-Stored）"><a href="#XSS-Stored）" class="headerlink" title="XSS(Stored）"></a>XSS(Stored）</h4><p>假设有这么一个网站，是让人去留言的，系统会把留言存储在服务器上</p>
+<p><img src="https://i.imgur.com/pqziaNi.png" alt=""></p>
+<p>这就是一个留言系统，我们测试了一下发现可以完整的把我们的留言保留在系统中，于是我们可以这样测试存储型XSS</p>
+<p>由于Name输入框中有字数限制，当然是可以修改的，这里我们在Message中输入一句恶意代码：<code>&lt;script&gt;alert(&quot;XSS&quot;);&lt;/script&gt;</code></p>
+<p><img src="https://i.imgur.com/5xyeVOH.png" alt=""></p>
+<p>弹出窗口内容，当我们再点开这个留言的链接时，就会直接执行，弹出窗口</p>
+<h4 id="XSS-DOM"><a href="#XSS-DOM" class="headerlink" title="XSS(DOM)"></a>XSS(DOM)</h4><p>假设有一个选择语言的网页，选择一类后就会进行语言的设置</p>
+<p><img src="https://i.imgur.com/X3wQURv.png" alt=""></p>
+<p>我们在URL中构造<code>default=&lt;script&gt;alert(&quot;XSS&quot;);&lt;/script&gt;</code></p>
+<p><img src="https://i.imgur.com/0ln43o5.png" alt=""></p>
+<p>就会产生一个简单的脚本执行，当然这里是基于DOM树的，让我们看看是怎么个情况</p>
+<p>受害者的浏览器接收到这个链接，发送HTTP请求到<code>http://127.0.0.1/DVWA-master/vulnerabilities/xss_d</code>并且接受到上面的HTML页。受害者的浏览器开始解析这个HTML为DOM，DOM包含一个对象叫document，document里面有个URL属性，这个属性里填充着当前页面的URL。当解析器到达javascript代码，它会执行它并且修改你的HTML页面。倘若代码中引用了document.URL，那么，这部分字符串将会在解析时嵌入到HTML中，然后立即解析，同时，javascript代码会找到(alert(…))并且在同一个页面执行它，这就产生了xss的条件。</p>
+<p>当然这里只是选中没有进行任何过滤的简单例子进行说明讲解。现实中对于提交的数据都有一定的过滤来防止XSS攻击的产生。</p>
+<h3 id="XSS攻击防御"><a href="#XSS攻击防御" class="headerlink" title="XSS攻击防御"></a>XSS攻击防御</h3><p>1、将重要的cookie标记为http only, 这样的话Javascript 中的document.cookie语句就不能获取到cookie了.</p>
+<p>2、表单数据规定值的类型，例如：年龄应为只能为int、name只能为字母数字组合。。。。</p>
+<p>4、对数据进行Html Encode 处理</p>
+<p>5、过滤或移除特殊的Html标签， 例如: <code>&lt;script&gt;, &lt;iframe&gt; , &amp;lt; for &lt;, &amp;gt; for &gt;, &amp;quot for</code></p>
+<p>6、过滤JavaScript 事件的标签。例如 <code>&quot;onclick=&quot;, &quot;onfocus&quot;</code> 等等。</p>
+<p>现实中的XSS攻击是博大精深的，这里只是抛砖引玉给大家一个对XSS的初步理解~</p>
+
+					
+				</div>
+			</div>
+		</article>
+
+		<ul class="am-pagination">
+    
+	
+		<li class="am-pagination-next">
+		<a class="pull-right" href="/2018/11/19/SQLi-Labs-基础题11-22指南/" title="SQLi-Labs-基础题11-22指南">
+			下一篇 &raquo;
+		</a>
+		</li>
+	 
+ </ul>
+        
+
+		<div class="theme-annie-comment-button-container">
+	<button id="annie-comment-button" class="theme-annie-comment-button" onclick="Annie_Comment()">
+		加载评论
+		<!--加载评论-->
+	</button>
+</div>
+
+<div id="annie-comment-container" class="theme-annie-comment-main-container">
+
+	
+		
+			<!-- comment valine -->
+			<!-- show valine comment -->
+<div id="valineComment" class="comment"></div>
+
+<!-- valine`s js & css -->
+<script>
+	window.jQuery || document.write('<script src="/js/jquery-2.1.1.min.js"><\/script>')
+</script>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/js/valine.min.js"></script>
+<link rel="stylesheet" href="/css/comment.css">
+
+<script>
+	var checkExistComment = setInterval(function() {
+		if( $('#valineComment').length ) {
+			new Valine({
+				// AV 对象来自上面引入av-min.js(老司机们不要开车➳♡゛扎心了老铁)
+				av: AV,
+				//使用id寻找div元素（使用class可能找不到）
+				el: '#valineComment',
+				emoticon_url: 'https://cloud.panjunwen.com/alu',
+				emoticon_list: ["吐.png", "期待.png", "高兴.png", "吐血倒地.png", "哭泣.png", "欢呼.png"],
+				app_id: "3333....", //获取APP ID
+				app_key: "3333......", //获取APP KEY
+				placeholder: "no any!", //评论框占位提示文字        			
+			});
+			clearInterval(checkExistComment);
+		}
+	}, 100);
+</script>
+		
+	
+
+</div>
+
+<script type="text/javascript">
+	/* Show Comment */
+	var Annie_Comment = function() {
+		function Show_Hidden(obj) {
+			obj.style.display = 'block';
+		}
+		
+		//var obutton = $('#annie-comment-button');
+		//var obutton = $('#annie-comment-container');
+		var obutton = document.getElementById("annie-comment-button" || "0");
+		var odiv = document.getElementById("annie-comment-container");
+		if( 'obutton' ) {
+			obutton.onclick = function() {
+				Show_Hidden(odiv);
+				$("#annie-comment-button").css("display", 'none');
+				return false;
+			}
+		}
+	};
+
+	(function Annie_Init() {
+		Annie_Comment();
+	})();
+</script>
+		
+		<!--
+	时间：2018-09-24
+	描述：The TOC module refers to 'https://github.com/codefine/hexo-theme-mellow', include toc.ejs、toc.js、toc.css. All rights reserved by codefine. 
+-->
+
+	
+		<aside class="post-widget">
+			<nav class="post-toc-wrap" id="post-toc">
+				
+					<strong>文章目录</strong>
+				
+				
+				<!--toc(post.content)-->
+				<ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#XSS产生的背景"><span class="post-toc-text">XSS产生的背景</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#XSS概述"><span class="post-toc-text">XSS概述</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#XSS攻击的危害"><span class="post-toc-text">XSS攻击的危害</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#XSS攻击的分类"><span class="post-toc-text">XSS攻击的分类</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#反射型XSS"><span class="post-toc-text">反射型XSS</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#存储型XSS"><span class="post-toc-text">存储型XSS</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#DOM型XSS"><span class="post-toc-text">DOM型XSS</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#XSS可能出现的地方"><span class="post-toc-text">XSS可能出现的地方</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#HTML文档"><span class="post-toc-text">HTML文档</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#多媒体、网页插件"><span class="post-toc-text">多媒体、网页插件</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#CS客户端软件"><span class="post-toc-text">CS客户端软件</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#XSS漏洞实例"><span class="post-toc-text">XSS漏洞实例</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#XSS-Reflected"><span class="post-toc-text">XSS(Reflected)</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#XSS-Stored）"><span class="post-toc-text">XSS(Stored）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#XSS-DOM"><span class="post-toc-text">XSS(DOM)</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#XSS攻击防御"><span class="post-toc-text">XSS攻击防御</span></a></li></ol>
+			</nav>
+			<div class="post-toc-bar"><div>
+		</aside>
+	
+
+	</div>
+</div>
+		</div>
+		</main>
+		
+		<!--footer-->
+		<footer>
+	<div class="blog-text-center">
+		<div class="theme-annie-social">
+				
+				
+					<a href="http://github.com/" title="Github" target="_blank"><i class="fa fa-github"></i>&nbsp;</a>
+					
+				
+					<a href="http://github.com/" title="Weibo" target="_blank"><i class="fa fa-weibo"></i>&nbsp;</a>
+				
+				
+					<a href="http://github.com/" title="Email" target="_blank"><i class="fa fa-envelope-o"></i>&nbsp;</a>
+					
+				
+					<a href="http://github.com/" title="QQ" target="_blank"><i class="fa fa-qq"></i>&nbsp;</a>
+					
+				
+					<a href="http://github.com/" title="Twitter" target="_blank"><i class="fa fa-twitter"></i>&nbsp;</a>
+						
+				
+		</div>
+	</div>
+
+	<div  class="blog-text-center">
+		<div class="theme-annie-copyright">
+			
+				&copy; 2017 - 2018, content by MR.TER. All Rights Reserved.			       	
+			
+		</div>
+	</div>
+
+	<div class="blog-text-center">
+		<div class="theme-annie-copyright">
+			<a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> Theme <a href="https://github.com/Sariay/hexo-theme-Annie" title="Annie" target="_blank" rel="noopener">Annie</a> by Sariay.		
+		</div>
+	</div>
+</footer>
+		<!-- <script src="http://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script> -->
+
+<script>
+	window.jQuery || document.write('<script src="/js/jquery-2.1.1.min.js"><\/script>')
+</script>
+
+<style>
+	.motto {
+		color: #000000;
+		font-size: 20px;
+		margin: 100px 25% 0;
+		width: 50%;
+		line-height: 1.4;
+		font-family:"KaiTi", "STXingkai", "Source Sans Pro", "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", FontAwesome, sans-serif;
+		text-align: center;
+	}
+	@media(max-width: 890px) {
+		.motto {	
+			margin: 100px 10% 0;
+			width: 80%;
+		}
+	}
+	@media(max-width: 890px) {
+		.motto {
+			margin: 100px 5% 0;
+			width: 90%;
+		}
+	}
+</style>
+
+
+	<script src="/js/motto.js"></script>
+	<script type="text/javascript">
+		$(".motto").html(getMingYanContent());
+	</script>	
+
+
+
+
+
+
+
+	<script type="text/javascript" src="/js/toc.js"></script>
+
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript">
+	//generate a random img that pre_name 'from 0 to 110'
+	var random_bg = Math.floor(Math.random() * 109 + 1);
+
+	//var bg = 'url(/img/random/' + random_bg + '.jpg)';		
+	var bg = 'url(https://wu125.github.io/groundback/' + random_bg + '.jpg)';
+
+	$("#header-bg-2").css("background-image", bg);
+</script>
+		
+		<!--back to top-->
+        <style type="text/css">
+	#totop {
+		background: white;
+		border-radius: 50%;
+		position: fixed;
+		right: 5.4%;
+		bottom: 80px;
+		cursor: pointer;
+	}
+	
+	#totop a {
+		color: #474747;
+		background-color: transparent;
+		padding: 10px;
+		text-decoration: none;
+	}
+	
+	@media(max-width:512px) {
+		#totop {
+			display: none;
+			visibility: hidden;
+		}
+	}
+</style>
+
+
+	<div id="totop">
+  		<a href="javascript:;" class="fa fa-arrow-up"></a>
+	</div>
+
+	</body>
+	</html>
+
